@@ -1,6 +1,8 @@
 <?php
 
+use Huxtable\Bot\Twitter;
 use Huxtable\CLI\Command;
+use Huxtable\Core\File;
 
 /**
  * @command		tweet
@@ -11,10 +13,21 @@ $commandTweet = new Command( 'tweet', 'Generate a logo and tweet it', function()
 {
 	GLOBAL $bot;
 
+	/* Define the target image file */
+	$dirTemp = $bot->getTempDirectory();
+	$fileImage = $dirTemp->child( 'tweet.png' );
+
+	/* Generate the image */
+	$bot->generateBoardImage( $fileImage );
+
+	/* Build the tweet */
+	$tweet = new Twitter\Tweet();
+	$tweet->attachMedia( $fileImage );
+
+	/* Post it */
 	try
 	{
-		$logo = $bot->generateLogo();
-		$bot->postImageToTwitter( $logo );
+		$bot->postTweetToTwitter( $tweet );
 	}
 	catch( \Exception $e )
 	{
