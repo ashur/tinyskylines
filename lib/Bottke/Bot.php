@@ -12,10 +12,12 @@ use Huxtable\Core\Utils;
 
 class Bot extends \Huxtable\Bot\Bot
 {
+	const HISTORY_HASH_DOMAIN = 'hashes';
+
 	/**
 	 * @var	array
 	 */
-	protected $board=[];
+	protected $boardTiles=[];
 
 	/**
 	 * @var	array
@@ -37,71 +39,142 @@ class Bot extends \Huxtable\Bot\Bot
 	{
 		parent::__construct( $name, $dirData );
 
-		$this->colors[0] = '19d4ff';
-		$this->colors[1] = '53dfff';
-		$this->colors[2] = '8ce9ff';
-		$this->colors[3] = 'c5f4ff';
-		$this->colors[4] = 'ffffff';
+		$this->colors['a'] = '19d4ff';
+		$this->colors['b'] = '53dfff';
+		$this->colors['c'] = '8ce9ff';
+		$this->colors['d'] = 'c5f4ff';
+		$this->colors['e'] = 'ffffff';
 
 		$this->tiles =
 		[
-			0	=> 0,
-			1	=> 0,
-			2	=> 0,
-			3	=> 0,
-			4	=> 0,
+			0	=> 'a',
+			1	=> 'a',
+			2	=> 'a',
+			3	=> 'a',
+			4	=> 'a',
 
-			5	=> 0,
-			6	=> 1,
-			7	=> 1,
-			8	=> 1,
-			9	=> 1,
+			5	=> 'a',
+			6	=> 'b',
+			7	=> 'b',
+			8	=> 'b',
+			9	=> 'b',
 
-			10	=> 0,
-			11	=> 1,
-			12	=> 2,
-			13	=> 2,
-			14	=> 2,
+			10	=> 'a',
+			11	=> 'b',
+			12	=> 'c',
+			13	=> 'c',
+			14	=> 'c',
 
-			15	=> 0,
-			16	=> 1,
-			17	=> 2,
-			18	=> 3,
-			19	=> 3,
+			15	=> 'a',
+			16	=> 'b',
+			17	=> 'c',
+			18	=> 'd',
+			19	=> 'd',
 
-			20	=> 0,
-			21	=> 1,
-			22	=> 2,
-			23	=> 3,
-			24	=> 4
+			20	=> 'a',
+			21	=> 'b',
+			22	=> 'c',
+			23	=> 'd',
+			24	=> 'e',
 		];
-
-		$this->board = $this->tiles;
-		shuffle( $this->board );
-	}
-
-	/**
-	 * @param
-	 * @return	void
-	 */
-	public function getBoard()
-	{
-		$boardColors = [];
-		foreach( $this->board as $tile )
-		{
-			$boardColors[] = $this->colors[$tile];
-		}
-
-		return $boardColors;
 	}
 
 	/**
 	 * @return	string
 	 */
-	public function getBoardHash()
+	protected function getHash()
 	{
-		$colorIds = array_values( $this->board );
+		$colorIds = array_values( $this->boardTiles );
 		$hashString = implode( '', $colorIds );
-		echo $hashString . PHP_EOL;
+
+		return $hashString;
+	}
+
+	/**
+	 * @return	void
+	 */
+	public function generateBoard()
+	{
+		do
+		{
+			$this->boardTiles = $this->tiles;
+			shuffle( $this->boardTiles );
+
+			$hash = $this->getHash();
+		}
+		while( $this->history->domainEntryExists( self::HISTORY_HASH_DOMAIN, $hash ) );
+
+		$this->history->addDomainEntry( self::HISTORY_HASH_DOMAIN, $hash );
+	}
+
+	/**
+	 * Randomize tiles and return an array of colors
+	 *
+	 * @return	void
+	 */
+	public function generateBoardImage( File\File $fileImage )
+	{
+		$this->generateBoard();
+
+		/*
+		 * Setup
+		 */
+		$image = new \Imagick();
+		$image->newImage( 750, 750, '#ffffff' );
+		$image->setImageFormat( 'png' );
+
+		$draw = new \ImagickDraw();
+
+		/*
+		 * Draw each tile
+		 */
+		$boardColors = $this->getBoardColors();
+
+		$tileHeight = 150;
+		$tileWidth = $tileHeight;
+
+		$col = 0;
+		$row = 0;
+
+		for( $i = 0; $i < count( $boardColors ); $i++ )
+		{
+			$fillColor = $boardColors[$i];
+
+			$x = $col * $tileWidth;
+			$y = $row * $tileHeight;
+
+			$draw->setFillColor( "#{$fillColor}" );
+			$draw->rectangle( $x, $y, $x + $tileWidth, $y + $tileHeight );
+
+			$col++;
+
+			if( $i % 5 == 4 )
+			{
+				$col = 0;
+				$row++;
+			}
+		}
+
+		/* Set transparent pixel */
+		// $draw->setFillColor( 'rgba( 0, 0, 0, 0.5 )' );
+		// $draw->rectangle( 150, 150, 300, 300 );
+
+		$image->drawImage( $draw );
+		$fileImage->putContents( $image->getImageBlob() );
+	}
+
+	/**
+	 * @return	array
+	 */
+	public function getBoardColors()
+	{
+		$boardColors =[];
+
+		foreach( $this->boardTiles as $boardTile )
+		{
+			$boardColors[] = $this->colors[$boardTile];
+		}
+
+		return $boardColors;
 	}
 }
