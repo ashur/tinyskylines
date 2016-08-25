@@ -155,11 +155,27 @@ class Bot extends \Huxtable\Bot\Bot
 			}
 		}
 
-		/* Set transparent pixel */
-		// $draw->setFillColor( 'rgba( 0, 0, 0, 0.5 )' );
-		// $draw->rectangle( 150, 150, 300, 300 );
-
+		/* Draw tiles */
 		$image->drawImage( $draw );
+
+		/*
+		 * Set transparent pixel to fight Twitter compression
+		 */
+		$iterator = $image->getPixelIterator();
+		$iterator->setIteratorRow( 0 );
+
+		/* Get pixels in row */
+		$row = $iterator->getCurrentIteratorRow();
+
+		$pixel = $row[0];
+		$pixel->setColor( '#ffffff00');
+
+		/* Sync data back to image */
+		$iterator->syncIterator();
+
+		/*
+		 * Done
+		 */
 		$fileImage->putContents( $image->getImageBlob() );
 	}
 
