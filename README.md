@@ -1,3 +1,3 @@
-# Kottke Bottke
+# Tiny Skylines
 
-A command-line application that drives [@kottkebottke](https://twitter.com/kottkebottke).
+A command-line application that drives [@tinyskylines](https://twitter.com/tinyskylines).

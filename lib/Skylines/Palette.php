@@ -38,12 +38,6 @@ class Palette
 	 */
 	public function getBuildingColor()
 	{
-		// do
-		// {
-		// 	$buildingColor = '#' . Utils::randomElement( $this->colors );
-		// }
-		// while( $buildingColor == $this->skyColor || $buildingColor == $this->horizonColor );
-
 		shuffle( $this->colors );
 		$this->buildingColor = '#' . array_pop( $this->colors );
 		return $this->buildingColor;
@@ -58,14 +52,6 @@ class Palette
 		{
 			return $this->horizonColor;
 		}
-
-		// $skyColor = $this->getSkyColor();
-		//
-		// do
-		// {
-		// 	$horizonColor = '#' . Utils::randomElement( $this->colors );
-		// }
-		// while( $horizonColor == $skyColor );
 
 		shuffle( $this->colors );
 		$this->horizonColor = '#' . array_pop( $this->colors );

@@ -125,6 +125,8 @@ class Building
 			}
 		}
 
+
+
 		return $this->image;
 	}
 
