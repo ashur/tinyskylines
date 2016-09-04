@@ -10,7 +10,7 @@ $appName = basename( __FILE__ );
 
 $pathBase		= dirname( __DIR__ );
 $pathLib		= $pathBase . '/lib';
-$pathApp		= $pathLib  . '/Bottke';
+$pathApp		= $pathLib  . '/Skylines';
 $pathCommands	= $pathLib  . '/commands';
 $pathVendor		= $pathBase . '/vendor';
 $pathData		= '/var/opt/' . $appName;
@@ -24,7 +24,7 @@ $info = require_once( $pathLib . '/info.php' );
  * Initialize autoloading
  */
 include_once( $pathApp . '/Autoloader.php' );
-Bottke\Autoloader::register();
+Skylines\Autoloader::register();
 
 include_once( $pathVendor . '/huxtable/bot/autoload.php' );
 include_once( $pathVendor . '/huxtable/cli/autoload.php' );
@@ -69,7 +69,7 @@ $pathData = '/var/opt/' . $appName;
 $dirData = new File\Directory( $pathData );
 
 /* Bot */
-$bot = new Bottke\Bot( 'kottkebottke', $dirData );
+$bot = new Skylines\Bot( 'tinyskylines', $dirData );
 
 /* Attempt to run the requested command */
 $app->run();

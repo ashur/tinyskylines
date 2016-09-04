@@ -1,9 +1,10 @@
 <?php
 
 /*
- * This file is part of Bottke
+ * This file is part of Skylines
+
  */
-namespace Bottke;
+namespace Skylines;
 
 class Autoloader
 {

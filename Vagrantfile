@@ -16,13 +16,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		end
 
 		# Shared folder from the host machine to the guest machine. NFS provides much better performance
-		bots_config.vm.synced_folder ".", "/usr/local/kottkebottke", type: "nfs", mount_options: ['rw', 'vers=3', 'tcp', 'fsc']
+		bots_config.vm.synced_folder ".", "/usr/local/tinyskylines", type: "nfs", mount_options: ['rw', 'vers=3', 'tcp', 'fsc']
+		bots_config.vm.synced_folder "./devdata", "/var/opt/tinyskylines", type: "nfs", mount_options: ['rw', 'vers=3', 'tcp', 'fsc']
 	end
-
-	config.vm.provision "shell" do |s|
-      ssh_pub_key = File.readlines("#{Dir.home}/.ssh/id_rsa.pub").first.strip
-      s.inline = <<-SHELL
-        echo #{ssh_pub_key} >> /home/vagrant/.ssh/authorized_keys
-      SHELL
-    end
+	#
+	# config.vm.provision "shell" do |s|
+    #   ssh_pub_key = File.readlines("#{Dir.home}/.ssh/id_rsa.pub").first.strip
+    #   s.inline = <<-SHELL
+    #     echo #{ssh_pub_key} >> /home/vagrant/.ssh/authorized_keys
+    #   SHELL
+    # end
 end
