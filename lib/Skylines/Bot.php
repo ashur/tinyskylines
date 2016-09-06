@@ -222,7 +222,7 @@ class Bot extends \Huxtable\Bot\Bot
 
 		if( !$splitGroups )
 		{
-			$nearMargin = rand( 3, 5 ) / 10;
+			$nearMargin = rand( 2, 4 ) / 10;
 	 		$nearStartX = floor( self::IMAGE_WIDTH * $nearMargin );
 	 		$nearStopX = floor( self::IMAGE_WIDTH * (1 - $nearMargin) );
 
