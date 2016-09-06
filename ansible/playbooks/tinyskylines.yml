@@ -1,0 +1,8 @@
+---
+
+# Run bots playbook first
+# - include: bots.yml
+
+- hosts: botservers
+  roles:
+    - { role: tinyskylines, tags: ["project"] }

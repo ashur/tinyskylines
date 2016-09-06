@@ -1,0 +1,8 @@
+---
+
+tinyskylines_project_name: tinyskylines
+tinyskylines_project_repo_url: git@gitlab.com:ashur/tinyskylines.git
+
+tinyskylines_project_root: "{{ projects_root }}/{{ tinyskylines_project_name }}"
+tinyskylines_project_executable_name: tinyskylines
+tinyskylines_project_data_dir: /var/opt/tinyskylines

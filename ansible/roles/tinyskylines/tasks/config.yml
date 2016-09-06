@@ -1,0 +1,7 @@
+---
+
+- include: run.yml
+  vars:
+      command: config
+      description: config {{ key }}
+      args: "{{ key }} {{ value }}"

@@ -1,0 +1,9 @@
+---
+
+gitlab_key_user: "{{ ansible_user }}"
+gitlab_key_server: gitlab.com
+gitlab_key_file: "~/.ssh/gitlab_rsa"
+
+gitlab_key_ssh_config: |
+  Host {{ gitlab_key_server }}
+    IdentityFile {{ gitlab_key_file }}
