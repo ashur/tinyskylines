@@ -233,6 +233,11 @@ class Bot extends \Huxtable\Bot\Bot
 				$building = new Building( $horizonColor, 1 );
 				$this->drawBuilding( $previousXOffset, $building );
 
+				if( $previousXOffset + $building->getWidth() > $nearStopX )
+				{
+					$building->setWidth( $nearStopX - $previousXOffset );
+				}
+
 				$gapWidth = rand( 0, 2 ) * self::PIXEL_SIZE;
 				$previousXOffset = $building->getWidth() + $previousXOffset + $gapWidth;
 			}
@@ -268,6 +273,11 @@ class Bot extends \Huxtable\Bot\Bot
 				/* Buildings */
 				$building = new Building( $horizonColor, 1 );
 				$this->drawBuilding( $previousXOffset, $building );
+
+				if( $previousXOffset + $building->getWidth() > $nearStopX )
+				{
+					$building->setWidth( $nearStopX - $previousXOffset );
+				}
 
 				$gapWidth = rand( 0, 2 ) * self::PIXEL_SIZE;
 				$previousXOffset = $building->getWidth() + $previousXOffset + $gapWidth;
