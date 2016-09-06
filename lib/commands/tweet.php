@@ -116,6 +116,17 @@ $commandTweet = new Command( 'tweet', 'Generate a logo and tweet it', function()
 
 	$bot->addPalette( $palette );
 
+	/* https://color.adobe.com/Black-Math-color-theme-183602 */
+	$palette = new Palette();
+
+	$palette->addColor( 'eb5937' );
+	$palette->addColor( '1c1919' );
+	$palette->addColor( '403d3c' );
+	$palette->addColor( '456f74' );
+	$palette->addColor( 'd3cbbd' );
+
+	$bot->addPalette( $palette );
+
 	/* Define the target image file */
 	$dirTemp = $bot->getTempDirectory();
 	$fileImage = $dirTemp->child( 'tweet.png' );
