@@ -209,4 +209,12 @@ class Building
 	{
 		return $this->width;
 	}
+
+	/**
+	 * @param	int		$width
+	 */
+	public function setWidth( $width )
+	{
+		$this->width = $width;
+	}
 }
