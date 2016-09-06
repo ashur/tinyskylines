@@ -1,7 +1,7 @@
 ---
 
 # Run bots playbook first
-# - include: bots.yml
+- include: bots.yml
 
 - hosts: botservers
   roles:
