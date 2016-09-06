@@ -60,14 +60,14 @@ class Building
 		$pixelWidth = $this->getPixelWidth();
 		$pixelHeight = $this->getPixelHeight();
 
-		if( $pixelWidth % 2 == 1 && $pixelWidth <= 5 )
+		if( $pixelWidth % 2 == 1 && $pixelWidth <= 9 && $pixelHeight >= 10 )
 		{
 			/* Antenna */
 			if( $pixelHeight / $pixelWidth >= 2  && rand( 1, 2 ) == 1 )
 			{
 				/* Median Column */
 				$colMedian = floor( $pixelWidth / 2 );
-				$antennaFloors = floor( $pixelHeight / 3 );
+				$antennaFloors = floor( $pixelHeight / rand( 3, 4 ) );
 
 				for( $row = 0; $row < $antennaFloors; $row++ )
 				{
