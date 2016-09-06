@@ -97,11 +97,22 @@ $commandTweet = new Command( 'tweet', 'Generate a logo and tweet it', function()
 	/* https://color.adobe.com/Woman-in-purple-dress-color-theme-32850 */
 	$palette = new Palette();
 
-	$palette->addColor( 'F9E4AD' );
-	$palette->addColor( 'E6B098' );
-	$palette->addColor( 'CC4452' );
+	$palette->addColor( 'f9e4ad' );
+	$palette->addColor( 'e6b098' );
+	$palette->addColor( 'cc4452' );
 	$palette->addColor( '723147' );
-	$palette->addColor( '31152B' );
+	$palette->addColor( '31152b' );
+
+	$bot->addPalette( $palette );
+
+	/* https://color.adobe.com/Honey-Pot-color-theme-1490158 */
+	$palette = new Palette();
+
+	$palette->addColor( '105b63' );
+	$palette->addColor( 'fffad5' );
+	$palette->addColor( 'ffd34e' );
+	$palette->addColor( 'db9e36' );
+	$palette->addColor( 'bd4932' );
 
 	$bot->addPalette( $palette );
 
