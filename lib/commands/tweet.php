@@ -127,6 +127,17 @@ $commandTweet = new Command( 'tweet', 'Generate a logo and tweet it', function()
 
 	$bot->addPalette( $palette );
 
+	/* https://color.adobe.com/anggo-djago-color-theme-2691053 */
+	$palette = new Palette();
+
+	$palette->addColor( '002A4A' );
+	$palette->addColor( '17607D' );
+	$palette->addColor( 'FFF1CE' );
+	$palette->addColor( 'FF9311' );
+	$palette->addColor( 'D64700' );
+
+	$bot->addPalette( $palette );
+
 	/* Define the target image file */
 	$dirTemp = $bot->getTempDirectory();
 	$fileImage = $dirTemp->child( 'tweet.png' );
