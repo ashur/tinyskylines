@@ -45,8 +45,13 @@ class Building
 		$this->image = new Imagick();
 		$this->image->newImage( $this->width, $this->height, '#ffffff00' );
 
-		$pixelRows = $this->height / Bot::PIXEL_SIZE;
-		$pixelCols = $this->width / Bot::PIXEL_SIZE;
+		$pixelRows = floor( $this->height / Bot::PIXEL_SIZE );
+		$pixelCols = floor( $this->width / Bot::PIXEL_SIZE );
+
+		if( $pixelCols < 3 )
+		{
+			return $this->image;
+		}
 
 		/* Fill */
 		for( $pixelRow = 0; $pixelRow < $pixelRows; $pixelRow++ )
