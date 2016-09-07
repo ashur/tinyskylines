@@ -91,14 +91,13 @@ class Building
 
 		if( $pixelWidth % 2 == 1 && $pixelWidth >= 7 )
 		{
-			$random = rand( 1, 4 );
 			$colMedian = floor( $pixelWidth / 2 );
 			$delta = rand( 1, 2 );
 
 			/* KOIN tower */
-			if( $random == 1 )
+			if( rand( 1, 3 ) == 1 )
 			{
-				$koinFloors = floor( $pixelHeight / 4 );
+				$koinFloors = floor( $pixelHeight / 3 );
 
 				$width = 0;
 				for( $row = 0; $row < $koinFloors; $row++ )
@@ -129,8 +128,6 @@ class Building
 				}
 			}
 		}
-
-
 
 		return $this->image;
 	}
