@@ -155,10 +155,13 @@ class Building
 
 			for( $col = $x1; $col < $x2; $col++ )
 			{
-				$pixel = $pixels[$col];
-				$pixel->setColor( $color );
+				if( isset( $pixels[$col] ) )
+				{
+					$pixel = $pixels[$col];
+					$pixel->setColor( $color );
 
-				$pixelIterator->syncIterator();
+					$pixelIterator->syncIterator();					
+				}
 			}
 		}
 	}
