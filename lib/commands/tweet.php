@@ -138,6 +138,17 @@ $commandTweet = new Command( 'tweet', 'Generate a logo and tweet it', function()
 
 	$bot->addPalette( $palette );
 
+	/* https://twitter.com/brockwellswim/status/751004789543239681 */
+	$palette = new Palette();
+
+	$palette->addColor( '571d35' );
+	$palette->addColor( '0fabdc' );
+	$palette->addColor( 'f6988e' );
+	$palette->addColor( 'ffffff' );
+	$palette->addColor( 'ef685d' );
+
+	$bot->addPalette( $palette );
+
 	/* Define the target image file */
 	$dirTemp = $bot->getTempDirectory();
 	$fileImage = $dirTemp->child( 'tweet.png' );
