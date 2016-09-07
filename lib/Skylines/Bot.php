@@ -218,7 +218,7 @@ class Bot extends \Huxtable\Bot\Bot
 		/*
 		 * Near Buildings
 		 */
-		$splitGroups = rand( 1, 5 ) == 5;
+		$splitGroups = rand( 1, 4 ) == 4;
 
 		if( !$splitGroups )
 		{
