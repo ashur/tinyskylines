@@ -68,7 +68,7 @@ class Building
 		if( $pixelWidth % 2 == 1 && $pixelWidth <= 9 && $pixelHeight >= 10 )
 		{
 			/* Antenna */
-			if( $pixelHeight / $pixelWidth >= 2  && rand( 1, 2 ) == 1 )
+			if( $pixelHeight / $pixelWidth >= 2  && rand( 1, 3 ) == 1 )
 			{
 				/* Median Column */
 				$colMedian = floor( $pixelWidth / 2 );
