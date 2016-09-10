@@ -102,18 +102,19 @@ class Bot extends \Huxtable\Bot\Bot
 	/**
 	 * Set transparent pixel to fight Twitter compression
 	 *
+	 * @param	string	$color
 	 * @return	void
 	 */
-	public function drawTransparentPixel()
+	public function drawTransparentPixel( $color )
 	{
 		$iterator = $this->image->getPixelIterator();
-		$iterator->setIteratorRow( 0 );
+		$iterator->setIteratorRow( self::IMAGE_HEIGHT - 1 );
 
 		/* Get pixels in row */
 		$row = $iterator->getCurrentIteratorRow();
 
 		$pixel = $row[0];
-		$pixel->setColor( '#ffffff00');
+		$pixel->setColor( "{$color}95");
 
 		/* Sync data back to image */
 		$iterator->syncIterator();
@@ -288,7 +289,7 @@ class Bot extends \Huxtable\Bot\Bot
 		}
 
 		/* Transparent Pixel */
-		$this->drawTransparentPixel();
+		$this->drawTransparentPixel( $horizonColor );
 
 		$fileImage->putContents( $this->image->getImageBlob() );
 	}
