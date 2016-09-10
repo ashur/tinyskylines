@@ -35,6 +35,8 @@ class Bot extends \Huxtable\Bot\Bot
 
 		$this->image = new Imagick();
 		$this->draw = new ImagickDraw();
+
+		$this->getPalettes();
 	}
 
 	/**
@@ -43,6 +45,33 @@ class Bot extends \Huxtable\Bot\Bot
 	public function addPalette( Palette $palette )
 	{
 		$this->palettes[] = $palette;
+	}
+
+	/**
+	 * @return	void
+	 */
+	public function getPalettes()
+	{
+		$palettesURL = 'https://www.dropbox.com/s/26zjp6fgwn9w8fv/palettes.txt?dl=1';
+		$palettesContents = file( $palettesURL );
+
+		foreach( $palettesContents as $line )
+		{
+			$line = trim( $line );
+
+			if( $line != '' && substr( $line, 0, 1 ) != '#' )
+			{
+				$colors = explode( ',', $line );
+				$palette = new Palette();
+
+				foreach( $colors as $color )
+				{
+					$palette->addColor( $color );
+				}
+
+				$this->addPalette( $palette );
+			}
+		}
 	}
 
 	/**
