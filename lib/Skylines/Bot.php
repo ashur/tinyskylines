@@ -199,13 +199,13 @@ class Bot extends \Huxtable\Bot\Bot
 		$this->image->drawImage( $this->draw );
 
 		/*
-		 * Distant Buildings
+		 * Background Buildings
 		 */
-		$distantMargin = rand( 1, 2 ) / 10;
-		$distantStartX = floor( self::IMAGE_WIDTH * $distantMargin );
-		$distantStopX = floor( self::IMAGE_WIDTH * (1 - $distantMargin) );
+		$backgroundMargin = rand( 1, 2 ) / 10;
+		$backgroundStartX = floor( self::IMAGE_WIDTH * $backgroundMargin );
+		$backgroundStopX = floor( self::IMAGE_WIDTH * (1 - $backgroundMargin) );
 
-		$previousXOffset = $distantStartX;
+		$previousXOffset = $backgroundStartX;
 		do
 		{
 			/* Buildings */
@@ -214,28 +214,28 @@ class Bot extends \Huxtable\Bot\Bot
 
 			$previousXOffset = $building->getWidth() + $previousXOffset;
 		}
-		while( $previousXOffset < $distantStopX );
+		while( $previousXOffset < $backgroundStopX );
 
 		/*
-		 * Near Buildings
+		 * Foreground Buildings
 		 */
 		$splitGroups = rand( 1, 4 ) == 4;
 
 		if( !$splitGroups )
 		{
-			$nearMargin = rand( 25, 40 ) / 100;
-	 		$nearStartX = floor( self::IMAGE_WIDTH * $nearMargin );
-	 		$nearStopX = floor( self::IMAGE_WIDTH * (1 - $nearMargin) );
+			$foregroundMargin = rand( 25, 40 ) / 100;
+	 		$foregroundStartX = floor( self::IMAGE_WIDTH * $foregroundMargin );
+	 		$foregroundStopX = floor( self::IMAGE_WIDTH * (1 - $foregroundMargin) );
 
-			$previousXOffset = $nearStartX;
+			$previousXOffset = $foregroundStartX;
 			do
 			{
 				/* Buildings */
 				$building = new Building( $horizonColor, 1 );
 
-				if( $previousXOffset + $building->getWidth() > $nearStopX )
+				if( $previousXOffset + $building->getWidth() > $foregroundStopX )
 				{
-					$building->setWidth( $nearStopX - $previousXOffset );
+					$building->setWidth( $foregroundStopX - $previousXOffset );
 				}
 
 				$this->drawBuilding( $previousXOffset, $building );
@@ -243,17 +243,17 @@ class Bot extends \Huxtable\Bot\Bot
 				$gapWidth = rand( 0, 2 ) * self::PIXEL_SIZE;
 				$previousXOffset = $building->getWidth() + $previousXOffset + $gapWidth;
 			}
-			while( $previousXOffset < $nearStopX );
+			while( $previousXOffset < $foregroundStopX );
 		}
 		else
 		{
-			$nearMargin = 1 / 10;
+			$foregroundMargin = 1 / 10;
 
 			/* Group 1 */
-			$nearStartX = floor( self::IMAGE_WIDTH * $nearMargin );
-			$nearStopX = floor( self::IMAGE_WIDTH * 0.33 * (1 - $nearMargin) );
+			$foregroundStartX = floor( self::IMAGE_WIDTH * $foregroundMargin );
+			$foregroundStopX = floor( self::IMAGE_WIDTH * 0.33 * (1 - $foregroundMargin) );
 
-			$previousXOffset = $nearStartX;
+			$previousXOffset = $foregroundStartX;
 			do
 			{
 				/* Buildings */
@@ -263,21 +263,21 @@ class Bot extends \Huxtable\Bot\Bot
 				$gapWidth = rand( 0, 2 ) * self::PIXEL_SIZE;
 				$previousXOffset = $building->getWidth() + $previousXOffset + $gapWidth;
 			}
-			while( $previousXOffset < $nearStopX );
+			while( $previousXOffset < $foregroundStopX );
 
 			/* Group 2 */
-			$nearStartX = floor( self::IMAGE_WIDTH * 0.67 );
-			$nearStopX = floor( self::IMAGE_WIDTH * (1 - $nearMargin) );
+			$foregroundStartX = floor( self::IMAGE_WIDTH * 0.67 );
+			$foregroundStopX = floor( self::IMAGE_WIDTH * (1 - $foregroundMargin) );
 
-			$previousXOffset = $nearStartX;
+			$previousXOffset = $foregroundStartX;
 			do
 			{
 				/* Buildings */
 				$building = new Building( $horizonColor, 1 );
 
-				if( $previousXOffset + $building->getWidth() > $nearStopX )
+				if( $previousXOffset + $building->getWidth() > $foregroundStopX )
 				{
-					$building->setWidth( $nearStopX - $previousXOffset );
+					$building->setWidth( $foregroundStopX - $previousXOffset );
 				}
 
 				$this->drawBuilding( $previousXOffset, $building );
@@ -285,7 +285,7 @@ class Bot extends \Huxtable\Bot\Bot
 				$gapWidth = rand( 0, 2 ) * self::PIXEL_SIZE;
 				$previousXOffset = $building->getWidth() + $previousXOffset + $gapWidth;
 			}
-			while( $previousXOffset < $nearStopX );
+			while( $previousXOffset < $foregroundStopX );
 		}
 
 		/* Transparent Pixel */
