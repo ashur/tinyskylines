@@ -32,8 +32,8 @@ class Building
 	{
 		$this->color = $color;
 
-		$this->height = (rand( 5, 25 ) * Bot::PIXEL_SIZE) * $coefficient;
 		$this->width = (rand( 3, 10 ) * Bot::PIXEL_SIZE) * $coefficient;
+		$this->height = (rand( 5, 20 ) * Bot::PIXEL_SIZE) * $coefficient;
 	}
 
 	/**
