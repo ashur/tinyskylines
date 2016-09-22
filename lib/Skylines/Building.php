@@ -160,7 +160,7 @@ class Building
 					$pixel = $pixels[$col];
 					$pixel->setColor( $color );
 
-					$pixelIterator->syncIterator();					
+					$pixelIterator->syncIterator();
 				}
 			}
 		}
