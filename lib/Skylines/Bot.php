@@ -210,9 +210,9 @@ class Bot extends \Huxtable\Bot\Bot
 		$skyGradientColor = $palette->getBuildingColor();
 
 		/* Stars */
-		if( rand( 1, 3 ) != 1 )
+		if( rand( 1, 4 ) != 1 )
 		{
-			$starCount = rand( 1, 4 );
+			$starCount = rand( 2, 5 );
 			for( $s = 0; $s < $starCount; $s++ )
 			{
 				$this->drawStar( $skyGradientColor );
