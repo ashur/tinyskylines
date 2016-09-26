@@ -65,7 +65,7 @@ class Building
 		$pixelWidth = $this->getPixelWidth();
 		$pixelHeight = $this->getPixelHeight();
 
-		if( $pixelWidth % 2 == 1 && $pixelWidth <= 9 && $pixelHeight >= 10 )
+		if( $pixelWidth % 2 == 1 && $pixelWidth <= 9 && $pixelHeight >= 8 )
 		{
 			/* Antenna */
 			if( $pixelHeight / $pixelWidth >= 2  && rand( 1, 3 ) == 1 )
