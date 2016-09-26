@@ -14,9 +14,10 @@ use ImagickDraw;
 
 class Bot extends \Huxtable\Bot\Bot
 {
-	const IMAGE_HEIGHT = 250;
-	const IMAGE_WIDTH  = 750;
-	const PIXEL_SIZE   = 5;
+	const IMAGE_HEIGHT			= 250;
+	const IMAGE_WIDTH			= 750;
+	const PIXEL_SIZE			= 5;
+	const GRADIENT_BAND_HEIGHT	= 30;
 
 	/**
 	 * @var	array
@@ -37,6 +38,14 @@ class Bot extends \Huxtable\Bot\Bot
 		$this->draw = new ImagickDraw();
 
 		$this->getPalettes();
+
+		/*
+		 * Calculate Y-value of the horizon so that we get a precise number of gradient bands
+		 */
+		$horizonYEstimate = floor( self::IMAGE_HEIGHT * 0.72);
+		$gradientBandCount = floor( $horizonYEstimate / self::GRADIENT_BAND_HEIGHT );
+
+		$this->horizonY = $gradientBandCount * self::GRADIENT_BAND_HEIGHT;
 	}
 
 	/**
@@ -112,8 +121,7 @@ class Bot extends \Huxtable\Bot\Bot
 	{
 		$imageBuilding = $building->draw();
 
-		$horizonY = 180;
-		$buildingY = $horizonY - $imageBuilding->getImageHeight();
+		$buildingY = $this->horizonY - $imageBuilding->getImageHeight();
 
 		$this->image->compositeImage( $imageBuilding, Imagick::COMPOSITE_DEFAULT, $xOffset, $buildingY );
 	}
@@ -123,9 +131,8 @@ class Bot extends \Huxtable\Bot\Bot
 	 */
 	public function drawHorizon( $color )
 	{
-		$horizonY = 180;
 		$this->draw->setFillColor( $color );
-		$this->draw->rectangle( 0, $horizonY, self::IMAGE_WIDTH, self::IMAGE_HEIGHT );
+		$this->draw->rectangle( 0, $this->horizonY, self::IMAGE_WIDTH, self::IMAGE_HEIGHT );
 	}
 
 	/**
@@ -174,23 +181,24 @@ class Bot extends \Huxtable\Bot\Bot
 	 */
 	public function drawSkyGradient( $color )
 	{
-		$this->draw->setFillColor( "{$color}80" );
-		$this->draw->rectangle( 0, 0, self::IMAGE_WIDTH, 30 );
+		$opacityMax = 80;
+		$opacityMin = 20;
+		$opacity = $opacityMax;
 
-		$this->draw->setFillColor( "{$color}70" );
-		$this->draw->rectangle( 0, 31, self::IMAGE_WIDTH, 60 );
+		$gradientBandCount = $this->horizonY / self::GRADIENT_BAND_HEIGHT;
 
-		$this->draw->setFillColor( "{$color}60" );
-		$this->draw->rectangle( 0, 61, self::IMAGE_WIDTH, 90 );
+		for( $g = 0; $g < $gradientBandCount; $g++ )
+		{
+			$gradientBandY1 = $g * self::GRADIENT_BAND_HEIGHT;
+			$gradientBandY2 = $gradientBandY1 + (self::GRADIENT_BAND_HEIGHT - 1);
 
-		$this->draw->setFillColor( "{$color}50" );
-		$this->draw->rectangle( 0, 91, self::IMAGE_WIDTH, 120 );
+			$opacityHex = dechex( $opacity );
 
-		$this->draw->setFillColor( "{$color}40" );
-		$this->draw->rectangle( 0, 121, self::IMAGE_WIDTH, 150 );
+			$this->draw->setFillColor( "{$color}{$opacityHex}" );
+			$this->draw->rectangle( 0, $gradientBandY1, self::IMAGE_WIDTH, $gradientBandY2 );
 
-		$this->draw->setFillColor( "{$color}30" );
-		$this->draw->rectangle( 0, 151, self::IMAGE_WIDTH, 180 );
+			$opacity = floor( $opacity - (($opacityMax - $opacityMin) / $gradientBandCount) );
+		}
 	}
 
 	/**
