@@ -1,6 +1,0 @@
----
-
-tinyskylines_cron: |
-    # Generate a skyline and tweet it
-    # 18: 11AM Pacific (1100)
-    0 18 * * * bots /usr/local/bin/tinyskylines tweet

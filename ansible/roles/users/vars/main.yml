@@ -1,4 +1,0 @@
----
-
-bots_password: "$6$rounds=656000$c4wYxKY.2eACEcL9$SjuNF4YicmEjkKV6zBgOV.OH3xMB8YkVoExi42Z6YFTqFRMHZ1uC8M70ij49kGYyeY.BS5E8JJCkN9DvRYMs70"
-bots_group: "{{ bots_user }}"

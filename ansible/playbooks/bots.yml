@@ -1,9 +1,0 @@
----
-
-- hosts: botservers
-
-  roles:
-    - { role: apt, tags: ["init"] }
-    - { role: users, tags: ["init"] }
-    - { role: ssh, tags: ["init"] }
-    - { role: gitlab, tags: ["init"] }

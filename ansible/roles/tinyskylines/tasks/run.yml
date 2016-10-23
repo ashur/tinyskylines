@@ -1,4 +1,0 @@
----
-
-- name: "{{ description }}"
-  shell: "{{ tinyskylines_project_executable_name }} {{ command }} {{ args }}"

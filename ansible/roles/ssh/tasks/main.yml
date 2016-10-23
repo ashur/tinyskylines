@@ -1,6 +1,0 @@
----
-
-- authorized_key:
-    user: "{{ bots_user }}"
-    key: https://github.com/ashur.keys
-  become: yes
