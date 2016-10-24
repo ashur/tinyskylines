@@ -40,7 +40,7 @@ class Star
 	 */
 	public function __construct()
 	{
-		$this->supportedRadii = [0,1,2];
+		$this->supportedRadii = [0,1];
 		$this->radius = Utils::randomElement( $this->supportedRadii );
 
 		$this->xOffsetPercentage = rand( 1, 9 ) / 10;
