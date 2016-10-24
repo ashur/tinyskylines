@@ -61,6 +61,15 @@ $commandConfig = new Command( 'config', "Configure the local environment for '{$
 
 	switch( $domain )
 	{
+		case 'slack':
+			$configKeys =
+			[
+				[ 'name' => 'emoji', 'description' => 'Emoji' ],
+				[ 'name' => 'name', 'description' => 'Name' ],
+				[ 'name' => 'webhook', 'description' => 'Webhook URL' ],
+			];
+			break;
+
 		case 'twitter':
 			$configKeys =
 			[
