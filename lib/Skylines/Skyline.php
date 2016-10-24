@@ -53,10 +53,6 @@ class Skyline
 		$this->backgroundColor = $palette->getBackgroundColor();
 		$this->foregroundColor = $palette->getForegroundColor();
 		$this->gradientColor = $palette->getGradientColor();
-
-		$this->backgroundColor = '#eeeeee';
-		$this->foregroundColor = '#333333';
-		$this->gradientColor = '#f00f00';
 	}
 
 	/**
