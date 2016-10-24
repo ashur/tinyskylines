@@ -13,6 +13,11 @@ class Star
 	/**
 	 * @var	int
 	 */
+	protected $opacity;
+
+	/**
+	 * @var	int
+	 */
 	protected $radius;
 
 	/**
@@ -40,6 +45,8 @@ class Star
 
 		$this->xOffsetPercentage = rand( 1, 9 ) / 10;
 		$this->yOffsetPercentage = rand( 1, 9 ) / 10;
+
+		$this->opacity = rand( 40, 100 );
 	}
 
 	/**
@@ -52,10 +59,13 @@ class Star
 		$offsetCol = floor( $canvas->getCols() * $this->xOffsetPercentage );
 		$offsetRow = floor( $maxRow * $this->yOffsetPercentage );
 
-		$canvas->drawAt( $offsetCol - $this->radius, $offsetRow, $color );
-		$canvas->drawAt( $offsetCol + $this->radius, $offsetRow, $color );
-		$canvas->drawAt( $offsetCol, $offsetRow - $this->radius, $color );
-		$canvas->drawAt( $offsetCol, $offsetRow + $this->radius, $color );
+		$opacityHex = dechex( $this->opacity );
+		$starColor = "{$color}{$opacityHex}";
+
+		$canvas->drawAt( $offsetCol - $this->radius, $offsetRow, $starColor );
+		$canvas->drawAt( $offsetCol + $this->radius, $offsetRow, $starColor );
+		$canvas->drawAt( $offsetCol, $offsetRow - $this->radius, $starColor );
+		$canvas->drawAt( $offsetCol, $offsetRow + $this->radius, $starColor );
 	}
 
 	/**
@@ -66,6 +76,14 @@ class Star
 	{
 		$this->xOffsetPercentage = $xOffsetPercentage;
 		$this->yOffsetPercentage = $yOffsetPercentage;
+	}
+
+	/**
+	 * @param	int	$opacity
+	 */
+	public function setOpacity( $opacity )
+	{
+		$this->opacity = $opacity;
 	}
 
 	/**
