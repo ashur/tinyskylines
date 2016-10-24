@@ -7,3 +7,6 @@
 [submodule "vendor/huxtable/bot"]
 	path = vendor/huxtable/bot
 	url = https://github.com/huxtable/bot.git
+[submodule "vendor/huxtable/pixel"]
+	path = vendor/huxtable/pixel
+	url = git@github.com:huxtable/pixel.git
