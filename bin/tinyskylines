@@ -29,6 +29,7 @@ Skylines\Autoloader::register();
 include_once( $pathVendor . '/huxtable/bot/autoload.php' );
 include_once( $pathVendor . '/huxtable/cli/autoload.php' );
 include_once( $pathVendor . '/huxtable/core/autoload.php' );
+include_once( $pathVendor . '/huxtable/pixel/autoload.php' );
 
 /*
  * Some basics
