@@ -10,6 +10,11 @@ use Huxtable\Core\Utils;
 class Palette
 {
 	/**
+	 * @var	string
+	 */
+	protected $backgroundColor;
+
+	/**
 	 * @var	type
 	 */
 	protected $colors=[];
@@ -17,12 +22,12 @@ class Palette
 	/**
 	 * @var	string
 	 */
-	protected $horizonColor;
+	protected $foregroundColor;
 
 	/**
 	 * @var	string
 	 */
-	protected $skyColor;
+	protected $gradientColor;
 
 	/**
 	 * @param	string	$color
@@ -36,40 +41,45 @@ class Palette
 	/**
 	 * @return	string
 	 */
-	public function getBuildingColor()
+	public function getBackgroundColor()
 	{
+		if( !is_null( $this->backgroundColor ) )
+		{
+			return $this->backgroundColor;
+		}
+
 		shuffle( $this->colors );
-		$this->buildingColor = '#' . array_pop( $this->colors );
-		return $this->buildingColor;
+		$this->backgroundColor = '#' . array_pop( $this->colors );
+		return $this->backgroundColor;
 	}
 
 	/**
 	 * @return	string
 	 */
-	public function getHorizonColor()
+	public function getForegroundColor()
 	{
-		if( !is_null( $this->horizonColor ) )
+		if( !is_null( $this->foregroundColor ) )
 		{
-			return $this->horizonColor;
+			return $this->foregroundColor;
 		}
 
 		shuffle( $this->colors );
-		$this->horizonColor = '#' . array_pop( $this->colors );
-		return $this->horizonColor;
+		$this->foregroundColor = '#' . array_pop( $this->colors );
+		return $this->foregroundColor;
 	}
 
 	/**
 	 * @return	string
 	 */
-	public function getSkyColor()
+	public function getGradientColor()
 	{
-		if( !is_null( $this->skyColor ) )
+		if( !is_null( $this->gradientColor ) )
 		{
-			return $this->skyColor;
+			return $this->gradientColor;
 		}
 
 		shuffle( $this->colors );
-		$this->skyColor = '#' . array_pop( $this->colors );
-		return $this->skyColor;
+		$this->gradientColor = '#' . array_pop( $this->colors );
+		return $this->gradientColor;
 	}
 }
