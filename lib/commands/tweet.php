@@ -5,6 +5,7 @@
  */
 namespace Skylines;
 
+use Huxtable\Bot\Slack;
 use Huxtable\Bot\Twitter;
 use Huxtable\CLI\Command;
 use Huxtable\Core\File;
@@ -46,6 +47,17 @@ $commandTweet = new Command( 'tweet', 'Generate a logo and tweet it', function()
 	}
 	catch( \Exception $e )
 	{
+		/* Slack */
+		$message = new Slack\Message();
+		$attachment = new Slack\Attachment( "Post to Twitter" );
+
+		$attachment->setColor( 'danger' );
+		$attachment->addField( 'Status', 'Failed', true );
+		$attachment->addField( 'Message', $e->getMessage(), true );
+
+		$message->addAttachment( $attachment );
+		$bot->postMessageToSlack( $message );
+
 		throw new Command\CommandInvokedException( $e->getMessage(), 1 );
 	}
 
