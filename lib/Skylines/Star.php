@@ -13,12 +13,12 @@ class Star
 	/**
 	 * @var	int
 	 */
-	protected $opacity;
+	public $opacity;
 
 	/**
 	 * @var	int
 	 */
-	protected $radius;
+	public $radius;
 
 	/**
 	 * @var	array
@@ -28,25 +28,25 @@ class Star
 	/**
 	 * @var	float
 	 */
-	protected $xOffsetPercentage;
+	public $xOffsetPercentage;
 
 	/**
 	 * @var	float
 	 */
-	protected $yOffsetPercentage;
+	public $yOffsetPercentage;
 
 	/**
 	 * @return	void
 	 */
 	public function __construct()
 	{
-		$this->supportedRadii = [0,1];
+		$this->supportedRadii = [0,0,1];
 		$this->radius = Utils::randomElement( $this->supportedRadii );
 
 		$this->xOffsetPercentage = rand( 1, 9 ) / 10;
 		$this->yOffsetPercentage = rand( 1, 9 ) / 10;
 
-		$this->opacity = rand( 40, 100 );
+		$this->opacity = rand( 90, 100 );
 	}
 
 	/**

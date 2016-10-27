@@ -14,39 +14,10 @@ use ImagickDraw;
 
 class Bot extends \Huxtable\Bot\Bot
 {
-	const IMAGE_HEIGHT			= 250;
-	const IMAGE_WIDTH			= 750;
-	const PIXEL_SIZE			= 5;
-	const GRADIENT_BAND_HEIGHT	= 30;
-
 	/**
 	 * @var	array
 	 */
 	protected $palettes=[];
-
-	/**
-	 * @param	string							$name			Bot name
-	 * @param	Huxtable\Core\File\Directory	$dirData
-	 * @param	array							$palettes
-	 * @return	void
-	 */
-	public function __construct( $name, File\Directory $dirData )
-	{
-		parent::__construct( $name, $dirData );
-
-		$this->image = new Imagick();
-		$this->draw = new ImagickDraw();
-
-		$this->getPalettes();
-
-		/*
-		 * Calculate Y-value of the horizon so that we get a precise number of gradient bands
-		 */
-		$horizonYEstimate = floor( self::IMAGE_HEIGHT * 0.72);
-		$gradientBandCount = floor( $horizonYEstimate / self::GRADIENT_BAND_HEIGHT );
-
-		$this->horizonY = $gradientBandCount * self::GRADIENT_BAND_HEIGHT;
-	}
 
 	/**
 	 * @param	Skylines\Palette	$palette
@@ -84,266 +55,47 @@ class Bot extends \Huxtable\Bot\Bot
 	}
 
 	/**
-	 * @param	int		$x
-	 * @param	int		$y
-	 * @param	string	$color
+	 * @return	Skylines\Palette
 	 */
-	public function drawAt( $x, $y, $color )
+	public function getRandomPalette()
 	{
-		$x1 = $x * Bot::PIXEL_SIZE;
-		$x2 = $x1 + Bot::PIXEL_SIZE;
-
-		$y1 = $y * Bot::PIXEL_SIZE;
-		$y2 = $y1 + Bot::PIXEL_SIZE;
-
-		$pixelIterator = $this->image->getPixelIterator();
-
-		for( $row = $y1; $row < $y2; $row++ )
+		if( count( $this->palettes ) == 0 )
 		{
-			$pixelIterator->setIteratorRow( $row );
-			$pixels = $pixelIterator->getCurrentIteratorRow();
-
-			for( $col = $x1; $col < $x2; $col++ )
-			{
-				$pixel = $pixels[$col];
-				$pixel->setColor( $color );
-
-				$pixelIterator->syncIterator();
-			}
-		}
-	}
-
-	/**
-	 * @param	int					$xOffset
-	 * @param	Skylines\Building	$building
-	 */
-	public function drawBuilding( $xOffset, Building $building )
-	{
-		$imageBuilding = $building->draw();
-
-		$buildingY = $this->horizonY - $imageBuilding->getImageHeight();
-
-		$this->image->compositeImage( $imageBuilding, Imagick::COMPOSITE_DEFAULT, $xOffset, $buildingY );
-	}
-
-	/**
-	 * @param	string	$color
-	 */
-	public function drawHorizon( $color )
-	{
-		$this->draw->setFillColor( $color );
-		$this->draw->rectangle( 0, $this->horizonY, self::IMAGE_WIDTH, self::IMAGE_HEIGHT );
-	}
-
-	/**
-	 * Set transparent pixel to fight Twitter compression
-	 *
-	 * @param	string	$color
-	 * @return	void
-	 */
-	public function drawTransparentPixel( $color )
-	{
-		$iterator = $this->image->getPixelIterator();
-		$iterator->setIteratorRow( self::IMAGE_HEIGHT - 1 );
-
-		/* Get pixels in row */
-		$row = $iterator->getCurrentIteratorRow();
-
-		$pixel = $row[0];
-		$pixel->setColor( "{$color}95");
-
-		/* Sync data back to image */
-		$iterator->syncIterator();
-	}
-
-	/**
-	 * @param	string	$color
-	 * @return	void
-	 */
-	public function drawStar( $color )
-	{
-		$x = rand( 2, $this->getPixelWidth() - 2 );
-		$y = rand( 2, $this->getPixelHeight() - 2 );
-
-		$opacity = sprintf( '%02s', rand( 5, 10 ) );
-		$starColor = $color . $opacity;
-
-		$starSize = rand( 0, 1 );
-
-		$this->drawAt( $x - $starSize, $y, $starColor );
-		$this->drawAt( $x + $starSize, $y, $starColor );
-		$this->drawAt( $x, $y - $starSize, $starColor );
-		$this->drawAt( $x, $y + $starSize, $starColor );
-	}
-
-	/**
-	 * @param	string	$color
-	 */
-	public function drawSkyGradient( $color )
-	{
-		$opacityMax = 80;
-		$opacityMin = 20;
-		$opacity = $opacityMax;
-
-		$gradientBandCount = $this->horizonY / self::GRADIENT_BAND_HEIGHT;
-
-		for( $g = 0; $g < $gradientBandCount; $g++ )
-		{
-			$gradientBandY1 = $g * self::GRADIENT_BAND_HEIGHT;
-			$gradientBandY2 = $gradientBandY1 + (self::GRADIENT_BAND_HEIGHT - 1);
-
-			$opacityHex = dechex( $opacity );
-
-			$this->draw->setFillColor( "{$color}{$opacityHex}" );
-			$this->draw->rectangle( 0, $gradientBandY1, self::IMAGE_WIDTH, $gradientBandY2 );
-
-			$opacity = floor( $opacity - (($opacityMax - $opacityMin) / $gradientBandCount) );
-		}
-	}
-
-	/**
-	 * @param	Huxtable\Core\File\File		$fileImage
-	 */
-	public function generateImage( File\File $fileImage )
-	{
-		$palette = Utils::randomElement( $this->palettes );
-
-		$skyColor = $palette->getSkyColor();
-		$this->image->newImage( self::IMAGE_WIDTH, self::IMAGE_HEIGHT, $skyColor );
-		$this->image->setImageFormat( 'png' );
-
-		/*
-		 * Sky
-		 */
-		$skyGradientColor = $palette->getBuildingColor();
-
-		/* Stars */
-		if( rand( 1, 4 ) != 1 )
-		{
-			$starCount = rand( 2, 5 );
-			for( $s = 0; $s < $starCount; $s++ )
-			{
-				$this->drawStar( $skyGradientColor );
-			}
+			$this->getPalettes();
 		}
 
-		/* Gradient */
-		$this->drawSkyGradient( $skyGradientColor );
-
-		/* Horizon */
-		$horizonColor = $palette->getHorizonColor();
-		$this->drawHorizon( $horizonColor );
-		$this->image->drawImage( $this->draw );
-
-		/*
-		 * Background Buildings
-		 */
-		$backgroundMargin = rand( 1, 2 ) / 10;
-		$backgroundStartX = floor( self::IMAGE_WIDTH * $backgroundMargin );
-		$backgroundStopX = floor( self::IMAGE_WIDTH * (1 - $backgroundMargin) );
-
-		$previousXOffset = $backgroundStartX;
-		do
-		{
-			/* Buildings */
-			$building = new Building( $skyColor, 1 );
-			$this->drawBuilding( $previousXOffset, $building );
-
-			$previousXOffset = $building->getWidth() + $previousXOffset;
-		}
-		while( $previousXOffset < $backgroundStopX );
-
-		/*
-		 * Foreground Buildings
-		 */
-		$splitGroups = rand( 1, 4 ) == 4;
-
-		if( !$splitGroups )
-		{
-			$foregroundMargin = rand( 25, 40 ) / 100;
-	 		$foregroundStartX = floor( self::IMAGE_WIDTH * $foregroundMargin );
-	 		$foregroundStopX = floor( self::IMAGE_WIDTH * (1 - $foregroundMargin) );
-
-			$previousXOffset = $foregroundStartX;
-			do
-			{
-				/* Buildings */
-				$building = new Building( $horizonColor, 1 );
-
-				if( $previousXOffset + $building->getWidth() > $foregroundStopX )
-				{
-					$building->setWidth( $foregroundStopX - $previousXOffset );
-				}
-
-				$this->drawBuilding( $previousXOffset, $building );
-
-				$gapWidth = rand( 0, 2 ) * self::PIXEL_SIZE;
-				$previousXOffset = $building->getWidth() + $previousXOffset + $gapWidth;
-			}
-			while( $previousXOffset < $foregroundStopX );
-		}
-		else
-		{
-			$foregroundMargin = 1 / 10;
-
-			/* Group 1 */
-			$foregroundStartX = floor( self::IMAGE_WIDTH * $foregroundMargin );
-			$foregroundStopX = floor( self::IMAGE_WIDTH * 0.33 * (1 - $foregroundMargin) );
-
-			$previousXOffset = $foregroundStartX;
-			do
-			{
-				/* Buildings */
-				$building = new Building( $horizonColor, 1 );
-				$this->drawBuilding( $previousXOffset, $building );
-
-				$gapWidth = rand( 0, 2 ) * self::PIXEL_SIZE;
-				$previousXOffset = $building->getWidth() + $previousXOffset + $gapWidth;
-			}
-			while( $previousXOffset < $foregroundStopX );
-
-			/* Group 2 */
-			$foregroundStartX = floor( self::IMAGE_WIDTH * 0.67 );
-			$foregroundStopX = floor( self::IMAGE_WIDTH * (1 - $foregroundMargin) );
-
-			$previousXOffset = $foregroundStartX;
-			do
-			{
-				/* Buildings */
-				$building = new Building( $horizonColor, 1 );
-
-				if( $previousXOffset + $building->getWidth() > $foregroundStopX )
-				{
-					$building->setWidth( $foregroundStopX - $previousXOffset );
-				}
-
-				$this->drawBuilding( $previousXOffset, $building );
-
-				$gapWidth = rand( 0, 2 ) * self::PIXEL_SIZE;
-				$previousXOffset = $building->getWidth() + $previousXOffset + $gapWidth;
-			}
-			while( $previousXOffset < $foregroundStopX );
-		}
-
-		/* Transparent Pixel */
-		$this->drawTransparentPixel( $horizonColor );
-
-		$fileImage->putContents( $this->image->getImageBlob() );
+		return Utils::randomElement( $this->palettes );
 	}
 
 	/**
-	 * @return	int
+	 * @param	Skylines\Palette	$palette
+	 * @return	Skylines\Skyline
 	 */
-	public function getPixelHeight()
+	public function getSkyline( Palette $palette )
 	{
-		return self::IMAGE_HEIGHT / self::PIXEL_SIZE;
-	}
+		$skyline = new Skyline( $palette );
 
-	/**
-	 * @return	int
-	 */
-	public function getPixelWidth()
-	{
-		return self::IMAGE_WIDTH / self::PIXEL_SIZE;
+		$starsCount = rand( 2, 4 );
+		for( $s = 0; $s < $starsCount; $s++ )
+		{
+			$star = new Star();
+			$skyline->addStar( $star );
+		}
+
+		$foregroundElementsCount = rand( 5, 8 );
+		for( $fg = 0; $fg < $foregroundElementsCount; $fg++ )
+		{
+			$building = new Building();
+			$skyline->addForegroundElement( $building );
+		}
+
+		$backgroundElementsCount = $foregroundElementsCount + rand( 2, 4 );
+		for( $bg = 0; $bg < 9; $bg++ )
+		{
+			$building = new Building();
+			$skyline->addBackgroundElement( $building );
+		}
+
+		return $skyline;
 	}
 }

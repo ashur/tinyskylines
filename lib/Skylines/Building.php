@@ -5,182 +5,216 @@
  */
 namespace Skylines;
 
-use Imagick;
+use Huxtable\Core\Utils;
+use Huxtable\Pixel;
 
-class Building
+class Building extends Element
 {
+	/**
+	 * @var	int
+	 */
+	public $antennaHeight = 0;
+
+	/**
+	 * @var	int
+	 */
+	public $gableOffset;
+
+	/**
+	 * @var	int
+	 */
+	public $roofSlope;
+
 	/**
 	 * @var	string
 	 */
-	protected $color;
+	public $roofSlopeDirection;
+
+	/**
+	 * @var	string
+	 */
+	public $roofType;
+
+	/**
+	 * @var	string
+	 */
+	public $type = 'building';
 
 	/**
 	 * @var	int
 	 */
-	protected $height;
+	public $windowsCount = 0;
 
 	/**
-	 * @var	int
+	 *
 	 */
-	protected $width;
-
-	/**
-	 * @param
-	 * @return	void
-	 */
-	public function __construct( $color, $coefficient )
+	public function __construct()
 	{
-		$this->color = $color;
+		// $this->height = rand( 8, 23 );
+		// $this->width = rand( 7, 15 );
+		$this->height = rand( 8, 21 );
+		$this->width = rand( 7, 13 );
 
-		$this->height = (rand( 4, 25 ) * Bot::PIXEL_SIZE) * $coefficient;
-		$this->width = (rand( 4, 15 ) * Bot::PIXEL_SIZE) * $coefficient;
-	}
+		/* Left Margin */
+		$leftMargins = [0, 0, 0, 1, 2 ];
+		$this->leftMargin = Utils::randomElement( $leftMargins );
 
-	/**
-	 * @param	string	$color
-	 * @return	Imagick
-	 */
-	public function draw()
-	{
-		$this->image = new Imagick();
-		$this->image->newImage( $this->width, $this->height, '#ffffff00' );
+		/*
+		 * Roof
+		 */
+		$randRoof = rand( 1, 20 );
 
-		$pixelRows = floor( $this->height / Bot::PIXEL_SIZE );
-		$pixelCols = floor( $this->width / Bot::PIXEL_SIZE );
-
-		if( $pixelCols < 3 )
+		if( in_array( $randRoof, range( 1, 15 ) ) )
 		{
-			return $this->image;
+			$this->roofType = 'flat';
+		}
+		if( in_array( $randRoof, range( 16, 17 ) ) )
+		{
+			$this->roofType = 'floating';
+		}
+		if( in_array( $randRoof, range( 18, 18 ) ) )
+		{
+			$this->roofType = 'gable';
+		}
+		if( in_array( $randRoof, range( 19, 20 ) ) )
+		{
+			$this->roofType = 'shed';
 		}
 
-		/* Fill */
-		for( $pixelRow = 0; $pixelRow < $pixelRows; $pixelRow++ )
+		if( $this->roofType == 'gable' )
 		{
-			for( $pixelCol = 0; $pixelCol < $pixelCols; $pixelCol++ )
+			if( $this->width %2 == 1 )
 			{
-				$this->drawAt( $pixelCol, $pixelRow, $this->color );
+				$this->width = $this->width - 1;
+			}
+
+			$this->gableOffset = rand( 0, 3 );
+		}
+
+		if( $this->roofType == 'shed' )
+		{
+			if( $this->height < ($this->width * 2) )
+			{
+				$this->height = $this->width * 2;
+			}
+
+			$this->roofSlope = rand( 2, 5 );
+			$this->roofSlopeDirection = rand( 0, 1 ) == 1 ? 'down' : 'up';
+		}
+
+		/*
+		 * Antenna
+		 */
+		if( $this->width % 2 == 1 && $this->roofType == 'flat' )
+		{
+			if( rand( 1, 3 ) == 3 )
+			{
+				$this->antennaHeight = floor( $this->width / 2 );
 			}
 		}
 
-		$pixelWidth = $this->getPixelWidth();
-		$pixelHeight = $this->getPixelHeight();
-
-		if( $pixelWidth % 2 == 1 && $pixelWidth <= 9 && $pixelHeight >= 8 )
+		/* Windows */
+		$windowsRoofTypes = ['flat', 'shed'];
+		if( in_array( $this->roofType, $windowsRoofTypes ) )
 		{
-			/* Antenna */
-			if( $pixelHeight / $pixelWidth >= 2  && rand( 1, 3 ) == 1 )
-			{
-				/* Median Column */
-				$colMedian = floor( $pixelWidth / 2 );
-				$antennaFloors = floor( $pixelHeight / rand( 3, 4 ) );
+			$windowCounts = [0, 1, 1, 2, 2];
+			$this->windowsCount = Utils::randomElement( $windowCounts );
+		}
+	}
 
-				for( $row = 0; $row < $antennaFloors; $row++ )
+	/**
+	 * @param	string					$color
+	 * @param	int						$offsetCol
+	 * @param	Huxtable\Pixel\Canvas	$canvas
+	 */
+	public function draw( $color, $offsetCol, Pixel\Canvas &$canvas )
+	{
+		$offsetRow = $canvas->getRows() - $this->getHeight();
+
+		$buildingCanvas = new Pixel\Canvas( $this->width, $this->getHeight(), $canvas->getPixelSize() );
+
+		/* Flat */
+		if( $this->roofType == 'flat' )
+		{
+			$buildingCanvas->fillRectangle( 0, $this->antennaHeight, $this->width, 1, $color );
+			$buildingCanvas->fillRectangle( 0, $this->antennaHeight + $this->windowsCount + 1, $this->width, $this->height, $color );
+
+			/* Windows */
+			for( $w = 1; $w <= $this->windowsCount; $w++ )
+			{
+				for( $col = 0; $col < $this->width; $col++ )
 				{
-					for( $col = 0; $col < $pixelWidth; $col++ )
+					if( $col != $w )
 					{
-						if( $col != $colMedian )
-						{
-							$this->eraseAt( $col, $row );
-						}
+						$buildingCanvas->drawAt( $col, $this->antennaHeight + $w, $color );
 					}
 				}
-
-				$this->eraseAt( $colMedian, 1 );
 			}
 		}
 
-		if( $pixelWidth % 2 == 1 && $pixelWidth >= 7 )
+		/* Floating */
+		if( $this->roofType == 'floating' )
 		{
-			$colMedian = floor( $pixelWidth / 2 );
-			$delta = rand( 1, 2 );
+			$buildingCanvas->fillRectangle( 0, 0, $this->width, 2, $color );
+			$buildingCanvas->fillRectangle( 0, 3, $this->width, $this->getHeight(), $color );
+		}
 
-			/* KOIN tower */
-			if( rand( 1, 3 ) == 1 )
+		/* Antenna */
+		if( $this->roofType == 'flat')
+		{
+			$centerCol = floor( $this->width / 2 );
+
+			for( $a = 0; $a < $this->antennaHeight; $a++ )
 			{
-				$koinFloors = floor( $pixelHeight / 3 );
-
-				$width = 0;
-				for( $row = 0; $row < $koinFloors; $row++ )
+				if( $a == 1 )
 				{
-					for( $col = 0; $col < $pixelWidth; $col++ )
-					{
-						if( $col <= ($colMedian - $width) || $col >= ($colMedian + $width) )
-						{
-							$this->eraseAt( $col, $row );
-						}
-					}
+					continue;
+				}
 
-					$width = $width + $delta;
+				$buildingCanvas->drawAt( $centerCol, $a, $color );
+			}
+		}
+
+		/* Gable */
+		if( $this->roofType == 'gable' )
+		{
+			$gableHeight = floor( $this->width / 2 ) - 1;
+
+			for( $col = 1; $col <= $gableHeight; $col++ )
+			{
+				for( $row = ($gableHeight - $col); $row < $gableHeight; $row++ )
+				{
+					$buildingCanvas->drawWithReflectionAt( $col, $row, $color );
 				}
 			}
+
+			$buildingCanvas->fillRectangle( 0, $gableHeight - $this->gableOffset, $this->width, $this->height, $color );
 		}
 
-		/* Erase Windows */
-		if( $pixelWidth > 4 )
+		/* Shed */
+		if( $this->roofType == 'shed' )
 		{
-			if( rand( 1, 2 ) == 1 )
-			{
-				$this->eraseAt( 1, 1 );
+			$roofRows = ($this->width / 2) + 1;
+			$roofLineWidth = 1;
 
-				if( rand( 1, 2 ) == 1 )
+			for( $row = 0; $row < $roofRows; $row++ )
+			{
+				if( $this->roofSlopeDirection == 'down' )
 				{
-					$this->eraseAt( 2, 2 );
+					$buildingCanvas->fillRectangle( 0, $row, $roofLineWidth, 1, $color );
 				}
+				if( $this->roofSlopeDirection == 'up' )
+				{
+					$buildingCanvas->fillRectangle( $this->width - $roofLineWidth, $row, $roofLineWidth, 1, $color );
+				}
+
+				$roofLineWidth = $roofLineWidth + $this->roofSlope;
 			}
+
+			$buildingCanvas->fillRectangle( 0, $roofRows, $this->width, $this->height, $color );
 		}
 
-		return $this->image;
-	}
-
-	/**
-	 * @param	int		$x
-	 * @param	int		$y
-	 * @param	string	$color
-	 * @return	void
-	 */
-	public function drawAt( $x, $y, $color )
-	{
-		$x1 = $x * Bot::PIXEL_SIZE;
-		$x2 = $x1 + Bot::PIXEL_SIZE;
-
-		$y1 = $y * Bot::PIXEL_SIZE;
-		$y2 = $y1 + Bot::PIXEL_SIZE;
-
-		$pixelIterator = $this->image->getPixelIterator();
-
-		for( $row = $y1; $row < $y2; $row++ )
-		{
-			$pixelIterator->setIteratorRow( $row );
-			$pixels = $pixelIterator->getCurrentIteratorRow();
-
-			for( $col = $x1; $col < $x2; $col++ )
-			{
-				if( isset( $pixels[$col] ) )
-				{
-					$pixel = $pixels[$col];
-					$pixel->setColor( $color );
-
-					$pixelIterator->syncIterator();
-				}
-			}
-		}
-	}
-
-	/**
-	 * @param
-	 * @return	void
-	 */
-	public function eraseAt( $x, $y )
-	{
-		$this->drawAt( $x, $y, '#ffffff00' );
-	}
-
-	/**
-	 * @param	string	$color
-	 */
-	public function getColor()
-	{
-		return $this->color;
+		$canvas->compositeCanvas( $buildingCanvas, $offsetCol, $offsetRow );
 	}
 
 	/**
@@ -188,38 +222,36 @@ class Building
 	 */
 	public function getHeight()
 	{
-		return $this->height;
+		return $this->height + $this->antennaHeight;
 	}
 
 	/**
-	 * @return	int
+	 * @param	array	$data
+	 * @return	Skylines\Building
 	 */
-	public function getPixelHeight()
+	public function getInstanceFromData( array $data )
 	{
-		return $this->height / Bot::PIXEL_SIZE;
+		$building = new self();
+
+		$building->antennaHeight = $data['antennaHeight'];
+		$building->gableOffset = $data['gableOffset'];
+		$building->roofSlope = $data['roofSlope'];
+		$building->roofSlopeDirection = $data['roofSlopeDirection'];
+		$building->roofType = $data['roofType'];
+		$building->windowsCount = $data['windowsCount'];
+
+		$building->height = $data['height'];
+		$building->leftMargin = $data['leftMargin'];
+		$building->width = $data['width'];
+
+		return $building;
 	}
 
 	/**
-	 * @return	int
+	 * @param	int	$windowsCount
 	 */
-	public function getPixelWidth()
+	public function setWindowsCount( $windowsCount )
 	{
-		return $this->width / Bot::PIXEL_SIZE;
-	}
-
-	/**
-	 * @return	int
-	 */
-	public function getWidth()
-	{
-		return $this->width;
-	}
-
-	/**
-	 * @param	int		$width
-	 */
-	public function setWidth( $width )
-	{
-		$this->width = $width;
+		$this->windowsCount = $windowsCount;
 	}
 }

@@ -18,16 +18,26 @@ $commandTweet = new Command( 'tweet', 'Generate a logo and tweet it', function()
 {
 	GLOBAL $bot;
 
-	/* Define the target image file */
+	/*
+	 * Files
+	 */
 	$dirTemp = $bot->getTempDirectory();
-	$fileImage = $dirTemp->child( 'tweet.png' );
+	$imageFile = $dirTemp->child( 'tweet.png' );
+	$jsonFile = $dirTemp->child( 'tweet.json' );
 
-	/* Generate the image */
-	$bot->generateImage( $fileImage );
+	/*
+	 * Render
+	 */
+	$palette = $bot->getRandomPalette();
+	$skyline = $bot->getSkyline( $palette );
 
-	/* Build the tweet */
+	$skyline->render( $imageFile, 150, 50, 5 );
+
+	/*
+	 * Tweet
+	 */
 	$tweet = new Twitter\Tweet();
-	$tweet->attachMedia( $fileImage );
+	$tweet->attachMedia( $imageFile );
 
 	/* Post it */
 	try
@@ -38,6 +48,14 @@ $commandTweet = new Command( 'tweet', 'Generate a logo and tweet it', function()
 	{
 		throw new Command\CommandInvokedException( $e->getMessage(), 1 );
 	}
+
+	/*
+	 * Save Skyline definition to disk
+	 */
+	$tweetData['skyline'] = $skyline;
+
+	$json = json_encode( $tweetData );
+	$jsonFile->putContents( $json );
 });
 
 return $commandTweet;
