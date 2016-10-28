@@ -43,8 +43,8 @@ class Star
 		$this->supportedRadii = [0,0,1];
 		$this->radius = Utils::randomElement( $this->supportedRadii );
 
-		$this->xOffsetPercentage = rand( 1, 9 ) / 10;
-		$this->yOffsetPercentage = rand( 1, 9 ) / 10;
+		$this->xOffsetPercentage = rand( 10, 90 ) / 100;
+		$this->yOffsetPercentage = rand( 10, 90 ) / 100;
 
 		$this->opacity = rand( 90, 100 );
 	}
