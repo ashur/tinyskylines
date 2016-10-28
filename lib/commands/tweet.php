@@ -35,6 +35,14 @@ $commandTweet = new Command( 'tweet', 'Generate a logo and tweet it', function()
 	$skyline->render( $imageFile, 150, 50, 5 );
 
 	/*
+	 * Save Skyline definition to disk
+	 */
+	$tweetData['skyline'] = $skyline;
+
+	$json = json_encode( $tweetData, JSON_PRETTY_PRINT );
+	$jsonFile->putContents( $json );
+
+	/*
 	 * Tweet
 	 */
 	$tweet = new Twitter\Tweet();
@@ -60,14 +68,6 @@ $commandTweet = new Command( 'tweet', 'Generate a logo and tweet it', function()
 
 		throw new Command\CommandInvokedException( $e->getMessage(), 1 );
 	}
-
-	/*
-	 * Save Skyline definition to disk
-	 */
-	$tweetData['skyline'] = $skyline;
-
-	$json = json_encode( $tweetData );
-	$jsonFile->putContents( $json );
 });
 
 return $commandTweet;
