@@ -62,10 +62,10 @@ class Skyline
 	}
 
 	/**
-	 * @param	Skylines\Building	$element
-	 * @param	boolean				$preScaled
+	 * @param	Skylines\Element\Element	$element
+	 * @param	boolean						$preScaled
 	 */
-	public function addBackgroundElement( Element $element, $preScaled = false )
+	public function addBackgroundElement( Element\Element $element, $preScaled = false )
 	{
 		/* Scale element up */
 		if( !$preScaled )
@@ -76,9 +76,6 @@ class Skyline
 			$element->setWidth( $elementWidth );
 			$element->setHeight( $elementHeight );
 		}
-
-		/* Remove windows */
-		$element->setWindowsCount( 0 );
 
 		/* Left margin */
 		if( count( $this->backgroundElements ) == 0 )
@@ -92,7 +89,7 @@ class Skyline
 	/**
 	 * @param	Skylines\Element	$element
 	 */
-	public function addForegroundElement( Element $element )
+	public function addForegroundElement( Element\Element $element )
 	{
 		$this->foregroundElements[] = $element;
 	}
@@ -135,8 +132,20 @@ class Skyline
 		{
 			switch( $backgroundElementData['type'] )
 			{
-				case 'building';
-					$backgroundElement = Building::getInstanceFromData( $backgroundElementData );
+				case 'flat';
+					$backgroundElement = Element\BuildingFlat::getInstanceFromData( $backgroundElementData );
+					break;
+
+				case 'floating';
+					$backgroundElement = Element\BuildingFloating::getInstanceFromData( $backgroundElementData );
+					break;
+
+				case 'gable';
+					$backgroundElement = Element\BuildingGable::getInstanceFromData( $backgroundElementData );
+					break;
+
+				case 'shed';
+					$backgroundElement = Element\BuildingShed::getInstanceFromData( $backgroundElementData );
 					break;
 			}
 
@@ -147,8 +156,20 @@ class Skyline
 		{
 			switch( $foregroundElementData['type'] )
 			{
-				case 'building';
-					$foregroundElement = Building::getInstanceFromData( $foregroundElementData );
+				case 'flat';
+					$foregroundElement = Element\BuildingFlat::getInstanceFromData( $foregroundElementData );
+					break;
+
+				case 'floating';
+					$foregroundElement = Element\BuildingFloating::getInstanceFromData( $foregroundElementData );
+					break;
+
+				case 'gable';
+					$foregroundElement = Element\BuildingGable::getInstanceFromData( $foregroundElementData );
+					break;
+
+				case 'shed';
+					$foregroundElement = Element\BuildingShed::getInstanceFromData( $foregroundElementData );
 					break;
 			}
 

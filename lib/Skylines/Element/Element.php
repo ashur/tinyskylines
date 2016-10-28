@@ -3,7 +3,7 @@
 /*
  * This file is part of Skylines
  */
-namespace Skylines;
+namespace Skylines\Element;
 
 use Huxtable\Pixel;
 

@@ -55,6 +55,37 @@ class Bot extends \Huxtable\Bot\Bot
 	}
 
 	/**
+	 * @return	Skyline\Element\Element
+	 */
+	public function getRandomElement()
+	{
+		$randType = rand( 1, 20 );
+
+		// 50%
+		if( in_array( $randType, range( 1, 10 ) ) )
+		{
+			$element = new Element\BuildingFlat();
+		}
+		// 30%
+		if( in_array( $randType, range( 11, 17 ) ) )
+		{
+			$element = new Element\BuildingFloating();
+		}
+		// 10%
+		if( in_array( $randType, range( 18, 19 ) ) )
+		{
+			$element = new Element\BuildingShed();
+		}
+		// 5%
+		if( in_array( $randType, range( 20, 20 ) ) )
+		{
+			$element = new Element\BuildingGable();
+		}
+
+		return $element;
+	}
+
+	/**
 	 * @return	Skylines\Palette
 	 */
 	public function getRandomPalette()
@@ -85,15 +116,15 @@ class Bot extends \Huxtable\Bot\Bot
 		$foregroundElementsCount = rand( 5, 8 );
 		for( $fg = 0; $fg < $foregroundElementsCount; $fg++ )
 		{
-			$building = new Building();
-			$skyline->addForegroundElement( $building );
+			$element = $this->getRandomElement();
+			$skyline->addForegroundElement( $element );
 		}
 
 		$backgroundElementsCount = $foregroundElementsCount + rand( 2, 4 );
 		for( $bg = 0; $bg < 9; $bg++ )
 		{
-			$building = new Building();
-			$skyline->addBackgroundElement( $building );
+			$element = $this->getRandomElement();
+			$skyline->addBackgroundElement( $element );
 		}
 
 		return $skyline;
