@@ -42,6 +42,11 @@ $commandTweet = new Command( 'tweet', 'Generate a logo and tweet it', function()
 	$json = json_encode( $tweetData, JSON_PRETTY_PRINT );
 	$jsonFile->putContents( $json );
 
+	if( $this->getOptionValue( 'no-tweet' ) )
+	{
+		return;
+	}
+
 	/*
 	 * Tweet
 	 */
@@ -69,5 +74,7 @@ $commandTweet = new Command( 'tweet', 'Generate a logo and tweet it', function()
 		throw new Command\CommandInvokedException( $e->getMessage(), 1 );
 	}
 });
+
+$commandTweet->registerOption( 'no-tweet' );
 
 return $commandTweet;
