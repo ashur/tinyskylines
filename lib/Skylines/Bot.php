@@ -95,7 +95,31 @@ class Bot extends \Huxtable\Bot\Bot
 			$this->getPalettes();
 		}
 
-		return Utils::randomElement( $this->palettes );
+		$attempts = 0;
+		$didFindMatch = false;
+
+		do
+		{
+			$palette = Utils::randomElement( $this->palettes );
+			if( !$this->history->domainEntryExists( 'palette', "{$palette}" ) )
+			{
+				$didFindMatch = true;
+				break;
+			}
+
+			$attempts++;
+		}
+		while( $attempts < 10 );
+
+		if( !$didFindMatch )
+		{
+			$this->history->resetDomain( 'palette' );
+			$palette = Utils::randomElement( $this->palettes );
+		}
+
+		$this->history->addDomainEntry( 'palette', "{$palette}" );
+
+		return $palette;
 	}
 
 	/**

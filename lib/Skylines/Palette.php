@@ -30,6 +30,14 @@ class Palette
 	protected $gradientColor;
 
 	/**
+	 * @return	string
+	 */
+	public function __toString()
+	{
+		return implode( $this->colors );
+	}
+
+	/**
 	 * @param	string	$color
 	 * @return	void
 	 */
