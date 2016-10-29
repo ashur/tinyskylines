@@ -61,13 +61,13 @@ class Bot extends \Huxtable\Bot\Bot
 	{
 		$randType = rand( 1, 20 );
 
-		// 50%
-		if( in_array( $randType, range( 1, 10 ) ) )
+		// 60%
+		if( in_array( $randType, range( 1, 12 ) ) )
 		{
 			$element = new Element\BuildingFlat();
 		}
-		// 30%
-		if( in_array( $randType, range( 11, 17 ) ) )
+		// 25%
+		if( in_array( $randType, range( 13, 17 ) ) )
 		{
 			$element = new Element\BuildingFloating();
 		}
