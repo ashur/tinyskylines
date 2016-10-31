@@ -180,6 +180,15 @@ class Skyline
 	}
 
 	/**
+	 * @param	Skylines\Element\Element	$element
+	 */
+	public function insertForegroundElement( Element\Element $element )
+	{
+		$offset = floor( count( $this->foregroundElements ) / 2 );
+		array_splice( $this->foregroundElements, $offset, 1, [$element] );
+	}
+
+	/**
 	 * @param	Huxtable\Core\File\File		$imageFile
 	 * @param	int		$cols
 	 * @param	int		$rows
