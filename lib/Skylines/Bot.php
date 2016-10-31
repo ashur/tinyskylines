@@ -59,27 +59,32 @@ class Bot extends \Huxtable\Bot\Bot
 	 */
 	public function getRandomElement()
 	{
-		$randType = rand( 1, 20 );
+		$randType = rand( 1, 100 );
 
 		// 60%
-		if( in_array( $randType, range( 1, 12 ) ) )
+		if( in_array( $randType, range( 1, 60 ) ) )
 		{
 			$element = new Element\BuildingFlat();
 		}
-		// 25%
-		if( in_array( $randType, range( 13, 17 ) ) )
+		// 20%
+		if( in_array( $randType, range( 61, 80 ) ) )
 		{
 			$element = new Element\BuildingFloating();
 		}
 		// 10%
-		if( in_array( $randType, range( 18, 19 ) ) )
+		if( in_array( $randType, range( 81, 90 ) ) )
 		{
 			$element = new Element\BuildingShed();
 		}
-		// 5%
-		if( in_array( $randType, range( 20, 20 ) ) )
+		// 4%
+		if( in_array( $randType, range( 91, 95 ) ) )
 		{
 			$element = new Element\BuildingGable();
+		}
+		// 1%
+		if( in_array( $randType, range( 96, 100 ) ) )
+		{
+			$element = new Element\BuildingWindows();
 		}
 
 		return $element;
