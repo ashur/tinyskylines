@@ -90,4 +90,28 @@ class Palette
 		$this->gradientColor = '#' . array_pop( $this->colors );
 		return $this->gradientColor;
 	}
+
+	/**
+	 * @param	string	$backgroundColor
+	 */
+	public function setBackgroundColor( $backgroundColor )
+	{
+		$this->backgroundColor = "#{$backgroundColor}";
+	}
+
+	/**
+	 * @param	string	$foregroundColor
+	 */
+	public function setForegroundColor( $foregroundColor )
+	{
+		$this->foregroundColor = "#{$foregroundColor}";
+	}
+
+	/**
+	 * @param	string	$gradientColor
+	 */
+	public function setGradientColor( $gradientColor )
+	{
+		$this->gradientColor = "#{$gradientColor}";
+	}
 }

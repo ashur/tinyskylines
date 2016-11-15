@@ -147,6 +147,10 @@ class Skyline
 				case 'shed';
 					$backgroundElement = Element\BuildingShed::getInstanceFromData( $backgroundElementData );
 					break;
+
+				case 'windows';
+					$backgroundElement = Element\BuildingWindows::getInstanceFromData( $backgroundElementData );
+					break;
 			}
 
 			$skyline->addBackgroundElement( $backgroundElement, true );
@@ -170,6 +174,14 @@ class Skyline
 
 				case 'shed';
 					$foregroundElement = Element\BuildingShed::getInstanceFromData( $foregroundElementData );
+					break;
+
+				case 'windows';
+					$foregroundElement = Element\BuildingWindows::getInstanceFromData( $foregroundElementData );
+					break;
+
+				case '19';
+					$foregroundElement = Element\Building19::getInstanceFromData( $foregroundElementData );
 					break;
 			}
 
