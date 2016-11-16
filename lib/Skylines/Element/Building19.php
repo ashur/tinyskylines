@@ -47,6 +47,7 @@ class Building19 extends BuildingWindows
 		{
 			if( $row % 2 == 0 )
 			{
+				// Draw divider
 				$buildingCanvas->fillRectangle( 0, $row, $this->width, 1, $color );
 			}
 			else
@@ -59,7 +60,7 @@ class Building19 extends BuildingWindows
 
 				for( $col = 1; $col < $this->width; $col = $col + 2 )
 				{
-					if( isset( $this->lightedWindows[(($row - 1) / 2)][(($col - 1) / 2)] ) )
+					if( isset( $this->lightedWindows[(($col - 1) / 2)][(($row - 1) / 2)] ) )
 					{
 						$buildingCanvas->drawAt( $col, $row, '#ffffff' );
 					}
