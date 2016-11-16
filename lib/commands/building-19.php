@@ -10,11 +10,11 @@ use Huxtable\CLI\Command;
 use Huxtable\Core\File;
 
 /**
- * @command		building-19
- * @desc			Building 19
- * @usage			building-19 [--no-tweet]
+ * @command		b19
+ * @desc		Building 19
+ * @usage		b19 [--no-tweet]
  */
-$commandDev = new Command( 'building-19', 'Building 19', function()
+$commandDev = new Command( 'b19', 'Building 19', function()
 {
 	GLOBAL $bot;
 
@@ -22,7 +22,7 @@ $commandDev = new Command( 'building-19', 'Building 19', function()
 	 * Files
 	 */
 	$dirTemp = $bot->getTempDirectory();
-	$imageFile = $dirTemp->child( 'tweet.gif' );
+	$imageFile = $dirTemp->child( 'tweet.png' );
 	$jsonFile = $dirTemp->child( 'tweet.json' );
 
 	/*
@@ -36,76 +36,53 @@ $commandDev = new Command( 'building-19', 'Building 19', function()
 
 	$skyline = $bot->getSkyline( $palette );
 
-	$element = new Element\Building19();
+	$elementLeft = new Element\Building19( 10, 18, 2 );
+	$elementRight = new Element\Building19( 15, 24, 0 );
 
-	$lightedWindows[] = '3,2';
-	$lightedWindows[] = '3,3';
-	$lightedWindows[] = '3,5';
-	$lightedWindows[] = '3,6';
-	$lightedWindows[] = '4,1';
+	$elementLeftOffsetCols = 2;
+	$elementLeftOffsetRows = -1;
+
+	$elementRightOffsetCols = -3;
+	$elementRightOffsetRows = 2;
+
+	$lightedWindows[] = '1,2';
+	$lightedWindows[] = '2,2';
 	$lightedWindows[] = '4,2';
-	$lightedWindows[] = '4,3';
-	$lightedWindows[] = '4,4';
-	$lightedWindows[] = '4,5';
-	$lightedWindows[] = '4,6';
-	$lightedWindows[] = '4,7';
-	$lightedWindows[] = '5,1';
 	$lightedWindows[] = '5,2';
+	$lightedWindows[] = '0,3';
+	$lightedWindows[] = '1,3';
+	$lightedWindows[] = '2,3';
+	$lightedWindows[] = '3,3';
+	$lightedWindows[] = '4,3';
 	$lightedWindows[] = '5,3';
-	$lightedWindows[] = '5,4';
-	$lightedWindows[] = '5,5';
-	$lightedWindows[] = '5,6';
-	$lightedWindows[] = '5,7';
-	$lightedWindows[] = '6,2';
 	$lightedWindows[] = '6,3';
+	$lightedWindows[] = '0,4';
+	$lightedWindows[] = '1,4';
+	$lightedWindows[] = '2,4';
+	$lightedWindows[] = '3,4';
+	$lightedWindows[] = '4,4';
+	$lightedWindows[] = '5,4';
 	$lightedWindows[] = '6,4';
-	$lightedWindows[] = '6,5';
-	$lightedWindows[] = '6,6';
-	$lightedWindows[] = '7,3';
-	$lightedWindows[] = '7,4';
-	$lightedWindows[] = '7,5';
-	$lightedWindows[] = '8,4';
+	$lightedWindows[] = '1,5';
+	$lightedWindows[] = '2,5';
+	$lightedWindows[] = '3,5';
+	$lightedWindows[] = '4,5';
+	$lightedWindows[] = '5,5';
+	$lightedWindows[] = '2,6';
+	$lightedWindows[] = '3,6';
+	$lightedWindows[] = '4,6';
+	$lightedWindows[] = '3,7';
 
-	/*
-	 * Gif
-	 */
-	$gifFile = $dirTemp->child( 'tweet.gif' );
-	$gifImage = new \Imagick();
-	$gifImage->setFormat( 'gif' );
-
-	$frameDelay = 200;
-	while( count( $lightedWindows ) >= 0 )
+	foreach( $lightedWindows as $windowCoordinateString )
 	{
-		$skyline->insertForegroundElement( $element );
-		$skyline->render( $imageFile, 150, 50, 5 );
-
-		$gifFrameImage = new \Imagick();
-		$gifFrameImage->readImage( $imageFile );
-
-		$gifFrameImage->setImageDelay( $frameDelay );
-		$gifImage->addImage( $gifFrameImage );
-
-		if( count( $lightedWindows ) == 0 )
-		{
-			break;
-		}
-
-		/* Windows */
-		shuffle( $lightedWindows );
-
-		$windowsToTurnOn = count( $lightedWindows ) <= 2 ? 1 : rand( 1, 2 );
-		for( $w = 0; $w < $windowsToTurnOn; $w++ )
-		{
-			$windowCoordinateString = array_pop( $lightedWindows );
-			$windowCoordinates = explode( ',', $windowCoordinateString );
-
-			$element->turnOnWindowLight( $windowCoordinates[0], $windowCoordinates[1] );
-		}
-
-		$frameDelay = count( $lightedWindows ) > 0 ? rand( 10, 120 ) : 600;
+		$windowCoordinates = explode( ',', $windowCoordinateString );
+		$elementLeft->turnOnWindowLight( $windowCoordinates[0] + $elementLeftOffsetCols, $windowCoordinates[1] + $elementLeftOffsetRows );
+		$elementRight->turnOnWindowLight( $windowCoordinates[0] + $elementRightOffsetCols, $windowCoordinates[1] + $elementRightOffsetRows );
 	}
 
-	$gifFile->putContents( $gifImage->getImagesBlob() );
+	$skyline->insertForegroundElement( $elementLeft, -1 );
+	$skyline->insertForegroundElement( $elementRight, 0 );
+	$skyline->render( $imageFile, 150, 50, 5 );
 
 	if( $this->getOptionValue( 'no-tweet' ) )
 	{
@@ -116,7 +93,7 @@ $commandDev = new Command( 'building-19', 'Building 19', function()
 	 * Tweet
 	 */
 	$tweet = new Twitter\Tweet();
-	$tweet->attachMedia( $gifFile );
+	$tweet->attachMedia( $imageFile );
 
 	/* Post it */
 	try
