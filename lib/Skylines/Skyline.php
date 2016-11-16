@@ -194,10 +194,10 @@ class Skyline
 	/**
 	 * @param	Skylines\Element\Element	$element
 	 */
-	public function insertForegroundElement( Element\Element $element )
+	public function insertForegroundElement( Element\Element $element, $offset=0 )
 	{
-		$offset = floor( count( $this->foregroundElements ) / 2 );
-		array_splice( $this->foregroundElements, $offset, 1, [$element] );
+		$replaceElement = floor( count( $this->foregroundElements ) / 2 ) + $offset;
+		array_splice( $this->foregroundElements, $replaceElement, 1, [$element] );
 	}
 
 	/**
