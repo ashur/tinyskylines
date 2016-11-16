@@ -23,12 +23,13 @@ class Building19 extends BuildingWindows
 	/**
 	 *
 	 */
-	public function __construct()
+	public function __construct( $width, $height, $leftMargin )
 	{
 		parent::__construct();
 
-		$this->height = 25;
-		$this->width = 19;
+		$this->height = $height;
+		$this->width = $width;
+		$this->leftMargin = $leftMargin;
 	}
 
 	/**
