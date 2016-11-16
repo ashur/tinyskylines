@@ -36,10 +36,10 @@ $commandDev = new Command( 'b19', 'Building 19', function()
 
 	$skyline = $bot->getSkyline( $palette );
 
-	$elementLeft = new Element\Building19( 10, 18, 2 );
+	$elementLeft = new Element\Building19( 8, 18, 2 );
 	$elementRight = new Element\Building19( 15, 24, 0 );
 
-	$elementLeftOffsetCols = 2;
+	$elementLeftOffsetCols = 1;
 	$elementLeftOffsetRows = -1;
 
 	$elementRightOffsetCols = -3;
