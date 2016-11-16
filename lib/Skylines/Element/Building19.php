@@ -64,6 +64,10 @@ class Building19 extends BuildingWindows
 					{
 						$buildingCanvas->drawAt( $col, $row, '#ffffff' );
 					}
+					else
+					{
+						$buildingCanvas->drawAt( $col, $row, "{$color}80" );
+					}
 				}
 			}
 		}
