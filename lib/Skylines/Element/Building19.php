@@ -63,7 +63,7 @@ class Building19 extends BuildingWindows
 				{
 					if( isset( $this->lightedWindows[(($col - 1) / 2)][(($row - 1) / 2)] ) )
 					{
-						$buildingCanvas->drawAt( $col, $row, '#ffffff' );
+						$buildingCanvas->drawAt( $col, $row, $this->windowColor );
 					}
 					else
 					{
@@ -94,9 +94,11 @@ class Building19 extends BuildingWindows
 	/**
 	 * @param	int		$col
 	 * @param	int		$row
+	 * @param	string	$windowColor
 	 */
-	public function turnOnWindowLight( $col, $row )
+	public function turnOnWindowLight( $col, $row, $windowColor )
 	{
 		$this->lightedWindows[$col][$row] = true;
+		$this->windowColor = $windowColor;
 	}
 }
