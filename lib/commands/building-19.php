@@ -82,6 +82,11 @@ $commandDev = new Command( 'b19', 'Building 19', function()
 
 	$skyline->insertForegroundElement( $elementLeft, -1 );
 	$skyline->insertForegroundElement( $elementRight, 0 );
+
+	$elementLast = new Element\BuildingFloating();
+	$elementLast->setLeftMargin( 2 );
+	$skyline->insertForegroundElement( $elementLast, 1 );
+
 	$skyline->render( $imageFile, 150, 50, 5 );
 
 	if( $this->getOptionValue( 'no-tweet' ) )
