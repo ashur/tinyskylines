@@ -70,8 +70,8 @@ class Skyline
 		/* Scale element up */
 		if( !$preScaled )
 		{
-			$elementWidth = $element->getWidth();// + rand( 5, 8 );
-			$elementHeight = $element->getHeight();// + rand( 5, 8 );
+			$elementWidth = $element->getWidth() + 2;
+			$elementHeight = $element->getHeight() + 1;
 
 			$element->setWidth( $elementWidth );
 			$element->setHeight( $elementHeight );
@@ -91,6 +91,12 @@ class Skyline
 	 */
 	public function addForegroundElement( Element\Element $element )
 	{
+		$elementHeight = $element->getHeight() - 2;
+		$element->setHeight( $elementHeight );
+
+		$elementWidth = $element->getWidth() - 2;
+		$element->setWidth( $elementWidth );
+
 		$this->foregroundElements[] = $element;
 	}
 
