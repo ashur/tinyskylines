@@ -155,7 +155,7 @@ class Bot extends \Huxtable\Bot\Bot
 		}
 
 		$backgroundElementsCount = $foregroundElementsCount + rand( 2, 4 );
-		for( $bg = 0; $bg < 9; $bg++ )
+		for( $bg = 0; $bg < $backgroundElementsCount; $bg++ )
 		{
 			$element = $this->getRandomElement();
 			$skyline->addBackgroundElement( $element );
