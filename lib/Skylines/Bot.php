@@ -142,7 +142,12 @@ class Bot extends \Huxtable\Bot\Bot
 			$skyline->addStar( $star );
 		}
 
-		$foregroundElementsCount = rand( 5, 8 );
+		$foregroundElementsCount = rand( 3, 7 );
+		if( $foregroundElementsCount % 2 == 0 )
+		{
+			$foregroundElementsCount--;
+		}
+
 		for( $fg = 0; $fg < $foregroundElementsCount; $fg++ )
 		{
 			$element = $this->getRandomElement();
