@@ -30,9 +30,9 @@ $commandDev = new Command( 'b19', 'Building 19', function()
 	 */
 	$palette = new Palette();
 
-	$palette->setBackgroundColor( '800699' );
-	$palette->setForegroundColor( '240d83' );
-	$palette->setGradientColor( '2db4ed' );
+	$palette->setBackgroundColor( '1f8a70' );
+	$palette->setForegroundColor( '004358' );
+	$palette->setGradientColor( 'bedb39' );
 
 	$skyline = $bot->getSkyline( $palette );
 
@@ -76,8 +76,8 @@ $commandDev = new Command( 'b19', 'Building 19', function()
 	foreach( $lightedWindows as $windowCoordinateString )
 	{
 		$windowCoordinates = explode( ',', $windowCoordinateString );
-		$elementLeft->turnOnWindowLight( $windowCoordinates[0] + $elementLeftOffsetCols, $windowCoordinates[1] + $elementLeftOffsetRows );
-		$elementRight->turnOnWindowLight( $windowCoordinates[0] + $elementRightOffsetCols, $windowCoordinates[1] + $elementRightOffsetRows );
+		$elementLeft->turnOnWindowLight( $windowCoordinates[0] + $elementLeftOffsetCols, $windowCoordinates[1] + $elementLeftOffsetRows, '#bedb39' );
+		$elementRight->turnOnWindowLight( $windowCoordinates[0] + $elementRightOffsetCols, $windowCoordinates[1] + $elementRightOffsetRows, '#bedb39' );
 	}
 
 	$skyline->insertForegroundElement( $elementLeft, -1 );
