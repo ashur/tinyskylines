@@ -26,5 +26,5 @@ abstract class Building extends Element
 	 * @param	array	$data
 	 * @return	Skylines\Building
 	 */
-	abstract public function getInstanceFromData( array $data );
+	abstract static public function getInstanceFromData( array $data );
 }

@@ -36,7 +36,7 @@ class BuildingFloating extends Building
 	 * @param	array	$data
 	 * @return	Skylines\Element\BuildingFloating
 	 */
-	public function getInstanceFromData( array $data )
+	static public function getInstanceFromData( array $data )
 	{
 		$building = new self();
 

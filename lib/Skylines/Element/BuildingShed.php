@@ -78,7 +78,7 @@ class BuildingShed extends Building
 	 * @param	array	$data
 	 * @return	Skylines\Building
 	 */
-	public function getInstanceFromData( array $data )
+	static public function getInstanceFromData( array $data )
 	{
 		$building = new self();
 

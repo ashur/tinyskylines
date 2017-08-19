@@ -112,7 +112,7 @@ class Skyline
 	 * @param	array	$data
 	 * @return	self
 	 */
-	public function getInstanceFromData( array $data )
+	static public function getInstanceFromData( array $data )
 	{
 		$skyline = new self();
 		$skylineData = $data['skyline'];
