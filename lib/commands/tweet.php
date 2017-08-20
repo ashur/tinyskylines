@@ -31,13 +31,32 @@ $commandTweet = new Command( 'tweet', 'Generate a skyline and tweet it', functio
 	 */
 	$scheduleURL  = "https://cabrera-bots.s3.amazonaws.com/tinyskylines/schedule.json";
 	$scheduleJSON = file_get_contents( $scheduleURL );
-	$schedule = Schedule\Schedule::createFromJSON( $scheduleJSON );
 
-	$currentTime = time();
-	$startTime   = $currentTime - 5 * 60;	// 5-minute window on either side
-	$endTime     = $currentTime + 5 * 60;
+	$scheduledEvents = [];
 
-	$scheduledEvents = $schedule->getEventsInRange( $startTime, $endTime );
+	try
+	{
+		$schedule = Schedule\Schedule::createFromJSON( $scheduleJSON );
+
+		$currentTime = time();
+		$startTime   = $currentTime - 5 * 60;	// 5-minute window on either side
+		$endTime     = $currentTime + 5 * 60;
+
+		$scheduledEvents = $schedule->getEventsInRange( $startTime, $endTime );
+	}
+	catch( \InvalidArgumentException $e )
+	{
+		/* Slack */
+		$message = new Slack\Message();
+		$attachment = new Slack\Attachment( "Schedule" );
+
+		$attachment->setColor( 'warning' );
+		$attachment->addField( 'Status', 'Failed', true );
+		$attachment->addField( 'Message', $e->getMessage(), true );
+
+		$message->addAttachment( $attachment );
+		$bot->postMessageToSlack( $message );
+	}
 
 	/* Generate scheduled skyline */
 	if( count( $scheduledEvents ) > 0 )
