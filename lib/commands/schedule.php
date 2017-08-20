@@ -34,10 +34,10 @@ $command = new Command( 'schedule', 'Preview the schedule', function()
 			continue;
 		}
 
-		$hoursUntilEvent = floor( $timeDifference / 60 / 60 );
-		$minutesUntilEvent = floor( ($timeDifference - ($hoursUntilEvent * 60)) / 60 );
+		$totalHoursUntilEvent = $timeDifference / 60 / 60;
+		$hoursUntilEvent = floor( $totalHoursUntilEvent );
+		$minutesUntilEvent = ceil( ($totalHoursUntilEvent - $hoursUntilEvent) * 60 );
 
-		// $timeUntilEvent = $hoursUntilEvent > 1 ? "{$hoursUntilEvent} hour(s)" : "{$minutesUntilEvent} minute(s)";
 		$timeUntilEvent = sprintf( '%02s:%02s remaining', $hoursUntilEvent, $minutesUntilEvent );
 
 		echo sprintf( $pattern, ' ', $event->getName(), $timeUntilEvent ) . PHP_EOL;
