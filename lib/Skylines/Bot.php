@@ -33,7 +33,8 @@ class Bot extends \Huxtable\Bot\Bot
 	public function getPalettes()
 	{
 		// $palettesURL = 'https://www.dropbox.com/s/26zjp6fgwn9w8fv/palettes.txt?dl=1';
-		$palettesURL = 'https://discreet-grouse.glitch.me/api/palettes.txt';
+		// $palettesURL = 'https://discreet-grouse.glitch.me/api/palettes.txt';
+		$palettesURL = 'https://paletas.glitch.me/api/v1/palettes.txt';
 		$palettesContents = file( $palettesURL );
 
 		foreach( $palettesContents as $line )
