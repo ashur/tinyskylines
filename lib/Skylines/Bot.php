@@ -34,8 +34,21 @@ class Bot extends \Huxtable\Bot\Bot
 	{
 		// $palettesURL = 'https://www.dropbox.com/s/26zjp6fgwn9w8fv/palettes.txt?dl=1';
 		// $palettesURL = 'https://discreet-grouse.glitch.me/api/palettes.txt';
-		$palettesURL = 'https://paletas.glitch.me/api/v1/palettes.txt';
-		$palettesContents = file( $palettesURL );
+		// $palettesURL = 'https://paletas.glitch.me/api/v1/palettes.txt';
+		$palettesURL = "https://free-brick.glitch.me/api/v1/palettes/random.txt";
+
+		$apiToken = getenv( 'TS_APIKEY' );
+
+		// Create a stream
+		$opts = [
+			"http" => [
+				"method" => "GET",
+				"header" => "API-Token: {$apiToken}"
+			]
+		];
+
+		$context = stream_context_create( $opts );
+		$palettesContents = file( $palettesURL, false, $context );
 
 		foreach( $palettesContents as $line )
 		{
