@@ -9,6 +9,13 @@ use Huxtable\Bot\Twitter;
 use Huxtable\CLI\Command;
 use Huxtable\Core\File;
 
+// NOTE
+// 
+// This file is not used for skyline generation. It was used to create a
+// one-time skyline for my wife, and is kept for historical/sentimental purposes ☺️
+// 
+// https://twitter.com/tinyskylines/status/800055804502167552
+
 /**
  * @command		b19
  * @desc		Building 19
