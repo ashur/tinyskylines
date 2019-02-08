@@ -5,19 +5,27 @@
  */
 namespace Skylines;
 
-use Huxtable\Bot\History;
-use Huxtable\Core\Config;
 use Huxtable\Core\File;
 use Huxtable\Core\Utils;
 use Imagick;
 use ImagickDraw;
 
-class Bot extends \Huxtable\Bot\Bot
+class Bot
 {
 	/**
 	 * @var	array
 	 */
 	protected $palettes=[];
+
+	/**
+	 * @return	void
+	 */
+	public function __construct()
+	{
+		/* Directories */
+		$pathProject = dirname( dirname( __DIR__ ) );
+		$this->dirProject = new File\Directory( $pathProject );
+	}
 
 	/**
 	 * @param	Skylines\Palette	$palette
@@ -32,12 +40,8 @@ class Bot extends \Huxtable\Bot\Bot
 	 */
 	public function getPalettes()
 	{
-		// $palettesURL = 'https://www.dropbox.com/s/26zjp6fgwn9w8fv/palettes.txt?dl=1';
-		// $palettesURL = 'https://discreet-grouse.glitch.me/api/palettes.txt';
-		// $palettesURL = 'https://paletas.glitch.me/api/v1/palettes.txt';
 		$palettesURL = "https://free-brick.glitch.me/api/v1/palettes/random.txt";
-
-		$apiToken = getenv( 'TS_APIKEY' );
+		$apiToken = getenv( 'TINYSKYLINES_APIKEY' );
 
 		// Create a stream
 		$opts = [
@@ -118,28 +122,7 @@ class Bot extends \Huxtable\Bot\Bot
 		$attempts = 0;
 		$didFindMatch = false;
 
-		do
-		{
-			$palette = Utils::randomElement( $this->palettes );
-			if( !$this->history->domainEntryExists( 'palette', "{$palette}" ) )
-			{
-				$didFindMatch = true;
-				break;
-			}
-
-			$attempts++;
-		}
-		while( $attempts < 10 );
-
-		if( !$didFindMatch )
-		{
-			$this->history->resetDomain( 'palette' );
-			$palette = Utils::randomElement( $this->palettes );
-		}
-
-		$this->history->addDomainEntry( 'palette', "{$palette}" );
-
-		return $palette;
+		return Utils::randomElement( $this->palettes );
 	}
 
 	/**
