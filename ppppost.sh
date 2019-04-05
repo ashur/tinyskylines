@@ -1,3 +1,5 @@
+#!/bin/bash
+
 BOTNAME="@tinyskylines"
 SRC=$(dirname "$0")
 
