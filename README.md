@@ -1,6 +1,6 @@
 # Tiny Skylines
 
-A command-line application that drives [@tinyskylines](https://twitter.com/tinyskylines).
+A command-line application that drives [@tinyskylines](https://botsin.space/@tinyskylines).
 
 ## Installation
 
