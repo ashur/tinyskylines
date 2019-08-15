@@ -41,7 +41,7 @@ class Bot
 	public function getPalettes()
 	{
 		$palettesURL = "https://paletas.ashur.cab/api/palettes.txt";
-		$palettesContents = file_get_contents( $palettesURL );
+		$palettesContents = file( $palettesURL );
 
 		foreach( $palettesContents as $line )
 		{
