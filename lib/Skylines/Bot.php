@@ -40,19 +40,8 @@ class Bot
 	 */
 	public function getPalettes()
 	{
-		$palettesURL = "https://free-brick.glitch.me/api/v1/palettes/random.txt";
-		$apiToken = getenv( 'TINYSKYLINES_APIKEY' );
-
-		// Create a stream
-		$opts = [
-			"http" => [
-				"method" => "GET",
-				"header" => "API-Token: {$apiToken}"
-			]
-		];
-
-		$context = stream_context_create( $opts );
-		$palettesContents = file( $palettesURL, false, $context );
+		$palettesURL = "https://paletas.ashur.cab/api/palettes.txt";
+		$palettesContents = file_get_contents( $palettesURL );
 
 		foreach( $palettesContents as $line )
 		{
