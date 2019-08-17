@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 SCRIPTS=$(dirname "$0")
-SRC=$(dirname "$0")/../
+SRC=$SCRIPTS/../
 
 source $SRC/.env
 source $SCRIPTS/log.sh
