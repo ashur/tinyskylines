@@ -6,7 +6,6 @@ SRC=$SCRIPTS/../
 source $SRC/.env
 source $SCRIPTS/log.sh
 
-BOTNAME="@tinyskylines"
 TEMP=$TINYSKYLINES_TEMPDIR
 DATA=$TINYSKYLINES_DATADIR
 
@@ -32,7 +31,7 @@ COLORS=${COLORS//\"/}
 GENERATED=$(/usr/bin/env php ${SRC}/generate.php ${COLORS})
 
 if [ $? -eq 0 ]; then
-	RESULT=$(/usr/bin/env ppppost to $BOTNAME --images "${TEMP}/skyline.png" --captions "${CAPTION}")
+	RESULT=$(/usr/bin/env ppppost to $TINYSKYLINES_BOTNAME --images "${TEMP}/skyline.png" --captions "${CAPTION}")
 
 	# Error While Posting
 	if [ $? -ne 0 ]; then
