@@ -6,6 +6,7 @@ SRC=$SCRIPTS/../
 source $SRC/.env
 source $SCRIPTS/log.sh
 
+mkdir -p $TINYSKYLINES_DATADIR
 PALETTE=$TINYSKYLINES_DATADIR/palette.json
 
 PALETTES=`curl -s https://paletas.ashur.cab/api/palettes.json`
