@@ -8,6 +8,19 @@ $pathApp	= $pathLib  . '/Skylines';
 $pathVendor	= $pathBase . '/vendor';
 $pathTemp	= getenv( 'TINYSKYLINES_TEMPDIR' );
 
+/* Colors */
+if( !isset( $argv[1] ) )
+{
+    echo 'usage: generate.php <color>,<color>,<color>...' . PHP_EOL;
+    exit( 1 );
+}
+$colors = explode( ',', $argv[1] );
+if( count( $colors ) < 3 )
+{
+    echo "Requires three or more colors: {$argv[1]}" . PHP_EOL;
+    exit( 1 );
+}
+
 /*
  * Initialize autoloading
  */
@@ -48,6 +61,11 @@ $imageFile = $dirTemp->child( 'skyline.png' );
 /*
  * Generate the image
  */
-$palette = $bot->getRandomPalette();
+$palette = new Skylines\Palette();
+foreach( $colors as $color )
+{
+    $palette->addColor( $color );
+}
+
 $skyline = $bot->getSkyline( $palette );
 $skyline->render( $imageFile, 150, 50, 5 );
