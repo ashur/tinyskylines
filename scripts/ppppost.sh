@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Generate skyline and post captioned image to Mastodon and Twitter
+
 SCRIPTS=$(dirname "$0")
 SRC=$SCRIPTS/../
 

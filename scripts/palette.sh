@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Select first palette element and save to disk
+
 SCRIPTS=$(dirname "$0")
 SRC=$SCRIPTS/../
 
