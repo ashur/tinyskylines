@@ -11,11 +11,9 @@ source $SCRIPTS/log.sh
 mkdir -p $TINYSKYLINES_DATADIR
 PALETTE=$TINYSKYLINES_DATADIR/palette.json
 
-PALETTES=`curl -s https://paletas.ashur.cab/api/palettes.json`
-LENGTH=`echo $PALETTES | jq length 2>&1`
-if [ $? -eq 0 ]; then
-	INDEX=$((1 + RANDOM % ($LENGTH - 1)))
-	echo $PALETTES | jq ".[$INDEX]" > $PALETTE
-else
-	loggg "$LENGTH" "$TINYSKYLINES_LOGSDIR"
+PALETTES=`curl -s https://paletas.ashur.cab/api/history.json`
+RESULT=`echo $PALETTES | jq ".[0]" 2>&1 > $PALETTE`
+
+if [ $? -ne 0 ]; then
+	loggg "$RESULT" "$TINYSKYLINES_LOGSDIR"
 fi
