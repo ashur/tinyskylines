@@ -11,7 +11,7 @@ source $SCRIPTS/log.sh
 mkdir -p $TINYSKYLINES_DATADIR
 PALETTE=$TINYSKYLINES_DATADIR/palette.json
 
-PALETTES=`curl -s https://paletas.ashur.cab/api/history.json`
+PALETTES=`curl -s $TINYSKYLINES_PALETTES_URL`
 RESULT=`echo $PALETTES | jq ".[0]" 2>&1 > $PALETTE`
 
 if [ $? -ne 0 ]; then
